@@ -1,0 +1,21 @@
+﻿  code.c
+D:\GitCode\WKayyy-Code\Project3\Project3\code.c(9,20): warning C4047: “函数”:“FILE **”与“char [11]”的间接级别不同
+D:\GitCode\WKayyy-Code\Project3\Project3\code.c(9,20): warning C4024: “fopen_s”: 形参和实参 1 的类型不同
+D:\GitCode\WKayyy-Code\Project3\Project3\code.c(9,12): error C2198: “errno_t fopen_s(FILE **,const char *,const char *)”: 用于调用的参数太少
+D:\GitCode\WKayyy-Code\Project3\Project3\code.c(9,10): warning C4047: “=”:“FILE *”与“errno_t”的间接级别不同
+D:\GitCode\WKayyy-Code\Project3\Project3\code.c(17,12): warning C4477: “scanf_s”: 格式字符串“%s”需要类型“unsigned int”的参数，但可变参数 2 拥有了类型“char *”
+      D:\GitCode\WKayyy-Code\Project3\Project3\code.c(17,12):
+      此参数用作缓冲区大小
+  
+D:\GitCode\WKayyy-Code\Project3\Project3\code.c(17,12): warning C4477: “scanf_s”: 格式字符串“%s”需要类型“char *”的参数，但可变参数 3 拥有了类型“float *”
+      D:\GitCode\WKayyy-Code\Project3\Project3\code.c(17,12):
+      此参数由转换说明符使用
+  
+D:\GitCode\WKayyy-Code\Project3\Project3\code.c(17,12): warning C4473: “scanf_s”: 没有为格式字符串传递足够的参数
+      D:\GitCode\WKayyy-Code\Project3\Project3\code.c(17,12):
+      占位符和其参数预计 5 可变参数，但提供的却是 3 参数
+      D:\GitCode\WKayyy-Code\Project3\Project3\code.c(17,12):
+      缺失的可变参数 4 为格式字符串“%s”所需
+      D:\GitCode\WKayyy-Code\Project3\Project3\code.c(17,12):
+      此参数用作缓冲区大小
+  
