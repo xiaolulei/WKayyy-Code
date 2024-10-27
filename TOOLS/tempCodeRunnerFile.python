@@ -1,0 +1,63 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <openssl/rsa.h>
+#include <openssl/pem.h>
+#include <openssl/err.h>
+
+void handle_errors() {
+    ERR_print_errors_fp(stderr);
+    abort();
+}
+
+void* __fastcall sub_148A(const unsigned char* a1, unsigned int a2, RSA* a3, unsigned int* a4) {
+    int v4;
+    void* v8;
+
+    v4 = RSA_size(a3);
+    v8 = malloc(v4);
+    if (v8 == NULL) {
+        perror("malloc");
+        exit(EXIT_FAILURE);
+    }
+
+    *a4 = RSA_public_encrypt(a2, a1, v8, a3, RSA_PKCS1_OAEP_PADDING);
+    if (*a4 == -1) {
+        handle_errors();
+    }
+
+    return v8;
+}
+
+int main() {
+    FILE* fp;
+    RSA* rsa = NULL;
+    unsigned char* encrypted = NULL;
+    unsigned int encrypted_len;
+
+    // Load public key from a file
+    fp = fopen("public_key.pem", "r");
+    if (!fp) {
+        perror("Unable to open public key file");
+        return 1;
+    }
+    rsa = PEM_read_RSA_PUBKEY(fp, NULL, NULL, NULL);
+    fclose(fp);
+    if (!rsa) {
+        handle_errors();
+        return 1;
+    }
+
+    // The data to be encrypted
+    unsigned char data[] = "flag{67ae31f0-0d35-4f36-a923-d8712883a5cb}";
+    size_t data_len = strlen((char*)data) + 1; // Include the null terminator
+
+    // Perform encryption
+    encrypted = sub_148A(data, data_len, rsa, &encrypted_len);
+
+    // Clean up
+    RSA_free(rsa);
+    free(encrypted);
+
+    return 0;
+}
