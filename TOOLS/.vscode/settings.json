@@ -58,6 +58,8 @@
   "C_Cpp_Runner.msvcSecureNoWarnings": false,
   "files.associations": {
     "stdlib.h": "c",
-    "T1.C": "cpp"
+    "T1.C": "cpp",
+    "stdio.h": "c",
+    "random": "c"
   }
 }
