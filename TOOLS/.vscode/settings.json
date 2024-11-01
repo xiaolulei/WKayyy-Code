@@ -60,6 +60,8 @@
     "stdlib.h": "c",
     "T1.C": "cpp",
     "stdio.h": "c",
-    "random": "c"
+    "random": "c",
+    "math.h": "c",
+    "2.C": "cpp"
   }
 }
