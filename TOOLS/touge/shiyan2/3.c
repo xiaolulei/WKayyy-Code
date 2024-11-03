@@ -6,8 +6,10 @@
         /********** Begin *********/
         int a,b;
         printf("请选择石头（0）、布（1）、剪刀（2）：\n");
-        scanf("玩家1：%d",&a);
-        scanf("玩家2：%d",&b);
+        printf("玩家1：");
+        scanf("%d", &a);
+        printf("玩家2：");
+        scanf("%d", &b);
         if(a==b){
             printf("平局！");
         }
@@ -29,10 +31,10 @@
         }
         else if(a==2){
             if(b==1){
-                printf("玩家2胜！");
+                printf("玩家1胜！");
             } 
             if(b==0){
-                printf("玩家1胜！");
+                printf("玩家2胜！");
             }
         }
         /********** End **********/
