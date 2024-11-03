@@ -16,19 +16,20 @@ int main() {
     int arr[3] = {a, b, c};
     int len = sizeof(arr) / sizeof(arr[0]);
     bubble_sort(arr, len);
-    if (arr[0] > arr[1] + arr[2]) {
+    if (arr[0] >= arr[1] + arr[2]) {
         printf("Not triangle\n");
-    } else {
+    } 
+    else{
         if (arr[0] * arr[0] == arr[1] * arr[1] + arr[2] * arr[2])
             printf("Right triangle\n");
-        else if (arr[0] * arr[0] < arr[1] * arr[1] + arr[2] * arr[2])
+         if (arr[0] * arr[0] < arr[1] * arr[1] + arr[2] * arr[2])
             printf("Acute triangle\n");
-        else
+        if( arr[0] * arr[0] > arr[1] * arr[1] + arr[2] * arr[2])
             printf("Obtuse triangle\n");
-        if (arr[0] == arr[1] && arr[1] == arr[2])
-            printf("Equilateral triangle\n");
         if (arr[0] == arr[1] || arr[1] == arr[2]|| arr[0] == arr[2])
             printf("Isosceles triangle\n");
+        if (arr[0] == arr[1] && arr[1] == arr[2])
+            printf("Equilateral triangle\n");
     }
     return 0;
 }
