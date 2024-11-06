@@ -5,8 +5,8 @@ int main() {
     double s=0;
     int n=1;
     while(n<=10){
-        sum1*=a;
-        sum2*=b;
+        sum1=a;
+        sum2=b;
         if(n>=2) a+=1;
         b+=2;
         n++;
@@ -15,3 +15,4 @@ int main() {
        printf("%.3lf",s); 
        return 0;
 }   
+// s=1+1/3+2/5+………………+n-1/2n-1   当n=10时，s=1.571;
