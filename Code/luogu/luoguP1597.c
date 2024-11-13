@@ -9,6 +9,9 @@ int main(){
         }
         else num[s[i]]=num[s[i+3]];
     }
+    if(num['a']!=0) num['a']-=48;
+    if(num['b']!=0) num['b']-=48;
+    if(num['c']!=0) num['c']-=48;
     printf("%d %d %d",num['a'],num['b'],num['c']);
     return 0;
 }
