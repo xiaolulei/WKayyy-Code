@@ -1,34 +1,44 @@
 #include<stdio.h>
 #include<math.h>
 
-int a [26];
-int main(){
-    char b[110];
-    gets(b);
-    for(int i = 0;b[i];i++){
-        a[ b[i] - 'a' ] ++;
+int a[26];
+int main()
+{
+    char str[110];
+    gets(str);
+    for(int i = 0;str[i];i++)
+    {
+        a[str[i]-'a']++;
     }
-    int min = 101 , max = -1;
-    for(int i = 0;i < 25;i++){
-        if(a[i]>0){
-            if(a[i]>max) max = a[i];
+    int max = -1,min = 110;
+    int falg = 0;
+    for(int i = 0;i<25;i++)
+    {
+        if(a[i]>0)
+        {
+            if(a[i]>max)max = a[i];
             if(a[i]<min) min = a[i];
         }
     }
     int t = max - min;
-    int flag=0;
-    if(t>2){
-        for(int i=2;i < sqrt(t);i++){
-            if(t%i==0){
-                flag = 1;
+    if(t>2)
+    {
+        for(int i = 2;i<sqrt(t);i++)
+        {
+            if(t%i==0)
+            {
+                falg = 1;
                 break;
             }
         }
     }
-    if(flag||t==1||t==0){
+    
+    if(falg||t==1||t==0)
+    {
         printf("No Answer\n0");
     }
-    else{
+    else 
+    {
         printf("Lucky Word\n%d",t);
     }
     return 0;

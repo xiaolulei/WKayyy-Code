@@ -6,9 +6,9 @@ int main(){
     int j1,j2,j3;
     int s=100;
     int s1,s2,s3;
-    for(;i<1000;i++){
-        for(;j<1000;j++){
-            for(;s<1000;s++){
+    for(;i<=333;i++){
+        for(;j<=666;j++){
+            for(;s<=999;s++){
                 if(i*2==j&&j*2==s){
                     i1=i%10;
                     i2=i/10%10;
