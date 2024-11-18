@@ -1,52 +1,68 @@
 #include<stdio.h>
+void solve(int n)
+{
+    int a[6];
+    for(int i = 0;i<6;i++)a[i] = 0;
+    for(int i = 1;i<=n;i++)
+    {
+        int b;
+        scanf("%d",&b);
+        a[b]++;//每个分数的个数
+    }
+
+    int max = -1;
+    for(int i = 1;i<=5;i++)
+    {
+        if(max<a[i])
+        {
+            max = a[i];
+        }
+    }
+    char str[30][20];
+    for(int i = 1;i<=max;i++)
+    {
+        for(int j = 1;j<=9;j++)
+        {
+            str[i][j] = ' ';
+        }
+    }
+        for(int j = 1,p = 1;j<=5;j++,p+=2)//1 3 5 7 9
+        {
+            for(int i = max;i>(max-a[j]);i--)
+            {
+                str[i][p] = '*';
+            }
+        }
+
+        int arr[6] = {0};
+    for(int i = 1;i<=max;i++)
+    {
+        for(int j = 1;j<=9;j++)
+        {
+            if(str[i][j]=='*')arr[i] = j;
+        }
+    }
+    for(int i = 1;i<=max;i++)
+    {
+        for(int j = 1;j<=arr[i];j++)
+        {
+            printf("%c",str[i][j]);
+        }
+        printf("\n");
+    }
+    for(int i = 1;i<5;i++)printf("%d ",i);
+    printf("5");
+}
 int main()
 {
-    int repeat,n;
-    scanf("%d",&repeat);
-    for(int i=1;i<=repeat;i++)
+    int t;
+    scanf("%d",&t);
+    while(t--)
     {
-        int count[6]={0};
-        int number[1000];
+        int n;
         scanf("%d",&n);
-        for(int j=1;j<=n;j++)
-        {
-            int rank;
-            scanf("%d",&rank);
-            if(rank==1) count[1]++;
-            if(rank==2) count[2]++;
-            if(rank==3) count[3]++;
-            if(rank==4) count[4]++;
-            if(rank==5) count[5]++;
-        }
-        int max=0;
-        for(int i=1;i<=5;i++)
-        {
-            if(count[i]>max) max=count[i];
-        }
-        
-            for(int i=1;i<=max;i++)
-            {
-                for(int s=1;s<=5;s++)
-                {
-                    if(count[s]>=i)
-                    number[i]++;
-                }
-            }
-        for(int j=max;j>0;j--)
-        {   
-            int sum=0;
-            for(int i=1;i<=5;i++)
-            {
-                if(count[i]>=j) printf("*");
-                else printf(" ");
-                if(i<5) printf(" ");
-            }
-            printf("\n");
-        }
-        for(int i=1;i<=4;i++){
-            printf("%d ",i);
-        }
-        printf("5\n");
+        solve(n);
+        printf("\n");
     }
     return 0;
 }
