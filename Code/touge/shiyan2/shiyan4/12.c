@@ -7,7 +7,7 @@ void solve(int n)
     {
         int b;
         scanf("%d",&b);
-        a[b]++;//每个分数的个数
+        a[b]++;
     }
 
     int max = -1;
