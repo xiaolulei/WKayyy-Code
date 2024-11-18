@@ -19,8 +19,6 @@ void blackhole(int num){
         count++;
     }
 }
-
-
 int bubbledown(int num){
     int len=4;
     int arr[4];

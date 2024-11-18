@@ -1,7 +1,8 @@
 #include<stdio.h>
-#include<strlen.h>
+#include<string.h>
 char b[1000000];
 int main(){
+    int len;
     char a[20];
     scanf("%s",a);
     scanf("%s",b);
