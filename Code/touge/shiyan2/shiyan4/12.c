@@ -26,15 +26,14 @@ void solve(int n)
             str[i][j] = ' ';
         }
     }
-        for(int j = 1,p = 1;j<=5;j++,p+=2)//1 3 5 7 9
+    for(int j = 1,p = 1;j<=5;j++,p+=2)//1 3 5 7 9
+    {
+        for(int i = max;i>(max-a[j]);i--)
         {
-            for(int i = max;i>(max-a[j]);i--)
-            {
-                str[i][p] = '*';
-            }
+            str[i][p] = '*';
         }
-
-        int arr[6] = {0};
+    }
+    int arr[6] = {0};
     for(int i = 1;i<=max;i++)
     {
         for(int j = 1;j<=9;j++)
