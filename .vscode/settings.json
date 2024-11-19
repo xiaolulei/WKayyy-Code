@@ -58,6 +58,7 @@
   "C_Cpp_Runner.msvcSecureNoWarnings": false,
   "files.associations": {
     "2.C": "cpp",
-    "luoguP5016.C": "cpp"
+    "luoguP5016.C": "cpp",
+    "random": "c"
   }
 }
