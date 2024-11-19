@@ -23,13 +23,13 @@ int main(){
         scanf("%c%c%c%c%c%c",&a,&a1,&b,&b1,&c,&c1);
         int flag[7]={0};
         flag[1]=Leopard(a,a1,b,b1,c,c1);
-            if(flag[1]==1) character[1]=a+48;
+            if(flag[1]==1) character[1]=(int)a;
             if(character[1]==49) character[1]=65;
             if(character[1]==59) character[1]=74;
             if(character[1]==60) character[1]=75;
             if(character[1]==61) character[1]=76; 
         flag[2]=Flush_straight(a,a1,b,b1,c,c1);
-            if(flag[2]==1) character[2]=Flush_straight1(a,a1,b,b1,c,c1)+48;
+            if(flag[2]==1) character[2]=Flush_straight1(a,a1,b,b1,c,c1);
             if(character[2]==59) character[2]=74;
             if(character[2]==49) character[2]=65;
             if(character[2]==60) character[2]=75;
@@ -67,31 +67,31 @@ int main(){
         int position=chosesort(flag);
         if(position==1) {
             printf("Leopard ");
-            printf("%c\n",character[1]);
+            printf("%d\n",character[1]);
         }
         if(position==2) {
             printf("Flush straight ");
-            printf("%c\n",character[2]);
+            printf("%d\n",character[2]);
         }
         if(position==3) {
             printf("Straight ");
-            printf("%c\n",character[3]);
+            printf("%d\n",character[3]);
         }
         if(position==4) {
             printf("Same king ");
-            printf("%c\n",character[4]);
+            printf("%d\n",character[4]);
         }
         if(position==5) 
         {printf("Pair ");
-        printf("%c\n",character[5]);
+        printf("%d\n",character[5]);
         }
         if(position==6) 
         {printf("General ");
-        printf("%c\n",character[6]);
+        printf("%d\n",character[6]);
         }
     }
     return 0;
-}
+} 
 int Leopard(char a,char a1,char b,char b1,char c,char c1)
 {
     if(a==b&&b==c)  return 1;
