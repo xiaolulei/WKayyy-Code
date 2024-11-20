@@ -8,7 +8,6 @@ int main()
     gets(b);
     gets(c);
     gets(d);
-    getchar();
     int lena=strlen(a)-1;
     int lenb=strlen(b)-1;
     int lenc=strlen(c)-1;
@@ -46,6 +45,7 @@ int main()
         for(int j=1;j<=max;j++){
             printf("%c",text[i][j]);
         }
+        printf("\n");
     }
     return 0;
 }
