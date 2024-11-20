@@ -59,6 +59,7 @@
   "files.associations": {
     "2.C": "cpp",
     "luoguP5016.C": "cpp",
-    "random": "c"
+    "random": "c",
+    "stdio.h": "c"
   }
 }

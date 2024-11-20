@@ -3,8 +3,49 @@
 int main()
 {
     char a[110],b[110],c[110],d[110];
-    int len1=0,len2=0,len3=0,len4=0;
+    int character[27]={0};//数据的初始化
     gets(a);
-    printf("%d %d %d",len1,len2,len3);
+    gets(b);
+    gets(c);
+    gets(d);
+    getchar();
+    int lena=strlen(a)-1;
+    int lenb=strlen(b)-1;
+    int lenc=strlen(c)-1;
+    int lend=strlen(d)-1;
+    int max=0;
+    for(int i=0;i<lena;i++)//循环条件的设置
+    {
+        character[a[i]-64]++;
+    }
+    for(int i=0;i<lenb;i++)
+    {
+        character[b[i]-64]++;
+    }
+    for(int i=0;i<lenc;i++)
+    {
+        character[c[i]-64]++;
+    }
+    for(int i=0;i<lend;i++)
+    {
+        character[d[i]-64]++;
+    }
+    char text[100][100]={' '};
+    for(int i=1;i<=26;i++)
+    {
+        if(character[max]<character[i]) max=i;
+    }
+    for(int i=1,p=1;i<=52;i+=2,p++)
+    {
+        for(int j=1;j<=character[p];j++)
+        {
+            text[i][j]='*';
+        }
+    }
+    for(int i=1;i<=52;i++){
+        for(int j=1;j<=max;j++){
+            printf("%c",text[i][j]);
+        }
+    }
     return 0;
 }
