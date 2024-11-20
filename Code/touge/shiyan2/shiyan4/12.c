@@ -26,7 +26,7 @@ void solve(int n)
             str[i][j] = ' ';
         }
     }
-    for(int j = 1,p = 1;j<=5;j++,p+=2)//1 3 5 7 9
+    for(int j = 1,p = 1;j<=5;j++,p+=2)
     {
         for(int i = max;i>(max-a[j]);i--)
         {

@@ -60,6 +60,7 @@
     "2.C": "cpp",
     "luoguP5016.C": "cpp",
     "random": "c",
-    "stdio.h": "c"
+    "stdio.h": "c",
+    "sstream": "c"
   }
 }

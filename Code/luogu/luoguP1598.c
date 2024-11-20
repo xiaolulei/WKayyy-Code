@@ -8,10 +8,10 @@ int main()
     gets(b);
     gets(c);
     gets(d);
-    int lena=strlen(a)-1;
-    int lenb=strlen(b)-1;
-    int lenc=strlen(c)-1;
-    int lend=strlen(d)-1;
+    int lena=strlen(a);
+    int lenb=strlen(b);
+    int lenc=strlen(c);
+    int lend=strlen(d);
     int max=1;
     for(int i=0;i<lena;i++)//循环条件的设置
     {
@@ -29,23 +29,28 @@ int main()
     {
         character[d[i]-64]++;
     }
-    char text[100][100]={' '};
+    char text[110][110];
+    for(int i=0;i<110;i++){
+        for(int j=0;j<110;j++){
+            text[i][j]=' ';
+        }
+    }
     for(int i=1;i<=26;i++)
     {
         if(character[max]<character[i]) max=i;
     }
-    for(int i=1,p=1;i<=52;i+=2,p++)
-    {
-        for(int j=1;j<=character[p];j++)
-        {
+    for(int i=1;i<=26;i++){
+        for(int j=1;j<=character[i];j++){
             text[i][j]='*';
         }
     }
-    for(int i=1;i<=51;i++){
-        for(int j=1;j<=max;j++){
-            printf("%c",text[i][j]);
+    for(int i=character[max];i>=1;i--){
+        for(int j=1;j<=26;j++){
+            printf("%c",text[j][i]);
         }
         printf("\n");
     }
     return 0;
 }
+
+//THE QUICK BROWN FOX JUMPED OVER THE LAZY DOG.
