@@ -13,7 +13,7 @@ int main()
     int lenb=strlen(b)-1;
     int lenc=strlen(c)-1;
     int lend=strlen(d)-1;
-    int max=0;
+    int max=1;
     for(int i=0;i<lena;i++)//循环条件的设置
     {
         character[a[i]-64]++;
