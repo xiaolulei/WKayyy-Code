@@ -42,7 +42,7 @@ int main()
             text[i][j]='*';
         }
     }
-    for(int i=1;i<=52;i++){
+    for(int i=1;i<=51;i++){
         for(int j=1;j<=max;j++){
             printf("%c",text[i][j]);
         }
