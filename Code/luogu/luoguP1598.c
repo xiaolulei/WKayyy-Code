@@ -39,17 +39,26 @@ int main()
     {
         if(character[max]<character[i]) max=i;
     }
-    for(int i=1;i<=26;i++){
+    for(int i=1,p=1;i<=26;i++,p+=2){
         for(int j=1;j<=character[i];j++){
-            text[i][j]='*';
+            text[p][j]='*';
+        }
+    }
+    int arr[100];
+    for(int i =1;i<=character[max];i++){
+        for(int j=1;j<=51;j++){
+            if(text[j][i]=='*') arr[i]=j;
         }
     }
     for(int i=character[max];i>=1;i--){
-        for(int j=1;j<=26;j++){
-            printf("%c",text[j][i]);
+        for(int j=1;j<=arr[i];j++){
+            printf("%c",text[j][i]);//注意数组两个位数代表什么
         }
         printf("\n");
     }
+    for(int i=1;i<=25;i++)
+    printf("%c ",i+64);
+    printf("Z");
     return 0;
 }
 

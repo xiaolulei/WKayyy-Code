@@ -1,32 +1,30 @@
 #include<stdio.h>
 #include<string.h>
-char b[1000000];
-int main(){
+char b[1000001];
+int main()
+{
+    int count=0;
     char a[20];
-    scanf("%s",a);
-    getchar();
-    scanf("%s",b);
-    getchar();
-    int sum=0,sum1=0;
-    int len1=strlen(a);
-    int len2=strlen(b);
-    for(int i=0;i<=len2-2;){
-        if(b[i]==a[0]){
-            for(int j=1;j<=len1-2;){
-                if(b[i]==a[j]||b[i]==a[j]+32||b[i]==a[j]-32){
-                    j++;
-                    i++;
-                    sum++;
-                    if(sum==len1) break;
-                }
-                else {
-                    sum=0;
-                    break;
-                }
+    gets(a);
+    gets(b);
+    int position[100];
+    int lena=strlen(a);
+    int lenb=strlen(b);
+    int p=0;
+    for(int i=0;i<lenb;i+=lena)
+    {
+        int sum=0;
+        for(int j=0;j<lena;j++){
+            if(a[j]==b[i+j]||a[j]==b[i+j]+'a'-'A'||a[j]==b[i+j]+'A'-'a'){
+               sum++;
             }
-            if(sum==len1) sum1++;
+        }
+        if(sum==lena) {
+            count++;
+            position[p]=i;
         }
     }
-    printf("%d",sum1);
+    if(count==0) printf("-1");
+    else printf("%d %d",count,position[0]);
     return 0;
 }
