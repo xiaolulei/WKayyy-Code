@@ -61,6 +61,7 @@
     "luoguP5016.C": "cpp",
     "random": "c",
     "stdio.h": "c",
-    "sstream": "c"
+    "sstream": "c",
+    "15.C": "cpp"
   }
 }
