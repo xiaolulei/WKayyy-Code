@@ -1,200 +1,183 @@
 #include <stdio.h>
-#include <ctype.h>
-int charToNum(char ch) {
-    if (isdigit(ch)) {
-        return ch - '0';
-    } else if (ch == 'A') {
-        return 1;
-    } else if (ch == 'J') {
-        return 11;
-    } else if (ch == 'Q') {
-        return 12;
-    } else if (ch == 'K') {
-        return 13;
-    }
-    return -1;
-}
-
-int isLeopard(char a, char a1, char b, char b1, char c, char c1) {
-    int numA = charToNum(a);
-    int numB = charToNum(b);
-    int numC = charToNum(c);
-    return numA == numB && numB == numC;
-}
-
-int isFlushStraight(char a, char a1, char b, char b1, char c, char c1) {
-    int num[3];
-    num[0] = charToNum(a);
-    num[1] = charToNum(b);
-    num[2] = charToNum(c);
-
-    for (int i = 0; i < 2; i++) {
-        for (int j = 0; j < 2 - i; j++) {
-            if (num[j] > num[j + 1]) {
-                int temp = num[j];
-                num[j] = num[j + 1];
-                num[j + 1] = temp;
-            }
-        }
-    }
-    return (a1 == b1 && b1 == c1) && (num[0] + 1 == num[1] && num[1] + 1 == num[2]);
-}
-
-int getFlushStraightMaxNum(char a, char a1, char b, char b1, char c, char c1) {
-    if (isFlushStraight(a, a1, b, b1, c, c1)) {
-        return charToNum(a);
-    }
-    return -1;
-}
-
-int isStraight(char a, char a1, char b, char b1, char c, char c1) {
-    int num[3];
-    num[0] = charToNum(a);
-    num[1] = charToNum(b);
-    num[2] = charToNum(c);
-    for (int i = 0; i < 2; i++) {
-        for (int j = 0; j < 2 - i; j++) {
-            if (num[j] > num[j + 1]) {
-                int temp = num[j];
-                num[j] = num[j + 1];
-                num[j + 1] = temp;
-            }
-        }
-    }
-    return (a1!= b1 && b1!= c1 && a1!= c1) && (num[0] + 1 == num[1] && num[1] + 1 == num[2]);
-}
-
-int getStraightMaxNum(char a, char a1, char b, char b1, char c, char c1) {
-    if (isStraight(a, a1, b, b1, c, c1)) {
-        return charToNum(a);
-    }
-    return -1;
-}
-int isSameSuit(char a1, char b1, char c1) {
-    return a1 == b1 && b1 == c1;
-}
-int getSameSuitMaxNum(char a, char a1, char b, char b1, char c, char c1) {
-    if (isSameSuit(a1, b1, c1)) {
-        int num[3];
-        num[0] = charToNum(a);
-        num[1] = charToNum(b);
-        num[2] = charToNum(c);
-        for (int i = 0; i < 2; i++) {
-            for (int j = 0; j < 2 - i; j++) {
-                if (num[j] > num[j + 1]) {
-                    int temp = num[j];
-                    num[j] = num[j + 1];
-                    num[j + 1] = temp;
-                }
-            }
-        }
-        return num[0];
-    }
-    return -1;
-}
-int isPair(char a, char a1, char b, char b1, char c, char c1) {
-    int numA = charToNum(a);
-    int numB = charToNum(b);
-    int numC = charToNum(c);
-    return ((numA == numB && numA!= numC) || (numA == numC && numA!= numB) || (numB == numC && numA!= numB))
-           && (a1!= b1 && b1!= c1 && a1!= c1);
-}
-int getPairMaxNum(char a, char a1, char b, char b1, char c, char c1) {
-    if (isPair(a, a1, b, b1, c, c1)) {
-        int num[3];
-        num[0] = charToNum(a);
-        num[1] = charToNum(b);
-        num[2] = charToNum(c);
-        for (int i = 0; i < 2; i++) {
-            for (int j = 0; j < 2 - i; j++) {
-                if (num[j] > num[j + 1]) {
-                    int temp = num[j];
-                    num[j] = num[j + 1];
-                    num[j + 1] = temp;
-                }
-            }
-        }
-        return num[0];
-    }
-    return -1;
-}
-int isGeneral(char a, char a1, char b, char b1, char c, char c1) {
-    int numA = charToNum(a);
-    int numB = charToNum(b);
-    int numC = charToNum(c);
-    return numA!= numB && numB!= numC;
-}
-int getGeneralMaxNum(char a, char a1, char b, char b1, char c, char c1) {
-    if (isGeneral(a, a1, b, b1, c, c1)) {
-        int num[3];
-        num[0] = charToNum(a);
-        num[1] = charToNum(b);
-        num[2] = charToNum(c);
-        for (int i = 0; i < 2; i++) {
-            for (int j = 0; j < 2 - i; j++) {
-                if (num[j] > num[j + 1]) {
-                    int temp = num[j];
-                    num[j] = num[j + 1];
-                    num[j + 1] = temp;
-                }
-            }
-        }
-        return num[0];
-    }
-    return -1;
-}
-int getMaxCardTypePosition(int flag[]) {
-    int position = 0;
-    for (int i = 0; i < 6; i++) {
-        if (flag[i] > flag[position]) {
-            position = i;
-        }
-    }
-    return position;
-}
+#include <string.h>
+typedef struct {
+    int rank;
+    char suit;
+} Card;
+void readCards(Card cards[], int n);
+int findMaxRank(Card cards[], int n);
+int isStraightFlush(Card cards[], int n);
+int isFourOfAKind(Card cards[], int n);
+int isFullHouse(Card cards[], int n);
+int isFlush(Card cards[], int n);
+int isStraight(Card cards[], int n);
+int isThreeOfAKind(Card cards[], int n);
+int isTwoPairs(Card cards[], int n);
+int isOnePair(Card cards[], int n);
 
 int main() {
-    int N;
-    scanf("%d", &N);
-    for (int i = 0; i < N; i++) {
-        char a, b, c;
-        char a1, b1, c1;
-        scanf(" %c%c %c%c %c%c", &a, &a1, &b, &b1, &c, &c1);
+    int n;
+    scanf("%d", &n);
 
-        int flag[6] = {0};
-        flag[0] = isLeopard(a, a1, b, b1, c, c1);
-        flag[1] = isFlushStraight(a, a1, b, b1, c, c1);
-        flag[2] = isStraight(a, a1, b, b1, c, c1);
-        flag[3] = isSameSuit(a1, b1, c1);
-        flag[4] = isPair(a, a1, b, b1, c, c1);
-        flag[5] = isGeneral(a, a1, b, b1, c, c1);
+    Card cards[3];
+    for (int i = 0; i < n; i++) {
+        readCards(cards, 3);
+        if (isStraightFlush(cards, 3)) {
+            printf("StraightFlush %d\n", findMaxRank(cards, 3));
+        } else if (isFourOfAKind(cards, 3)) {
+            printf("FourOfAKind %d\n", findMaxRank(cards, 3));
+        } else if (isFullHouse(cards, 3)) {
+            printf("FullHouse %d\n", findMaxRank(cards, 3));
+        } else if (isFlush(cards, 3)) {
+            printf("Flush %d\n", findMaxRank(cards, 3));
+        } else if (isStraight(cards, 3)) {
+            printf("Straight %d\n", findMaxRank(cards, 3));
+        } else if (isThreeOfAKind(cards, 3)) {
+            printf("ThreeOfAKind %d\n", findMaxRank(cards, 3));
+        } else if (isTwoPairs(cards, 3)) {
+            printf("TwoPairs %d\n", findMaxRank(cards, 3));
+        } else if (isOnePair(cards, 3)) {
+            printf("OnePair %d\n", findMaxRank(cards, 3));
+        } else {
+            printf("HighCard %d\n", findMaxRank(cards, 3));
+        }
+    }
 
-        int maxCardTypePosition = getMaxCardTypePosition(flag);
-        switch (maxCardTypePosition) {
-            case 0:
-                printf("Leopard ");
-                printf("%d\n", charToNum(a));
-                break;
-            case 1:
-                printf("Flush straight ");
-                printf("%d\n", getFlushStraightMaxNum(a, a1, b, b1, c, c1));
-                break;
-            case 2:
-                printf("Straight ");
-                printf("%d\n", getStraightMaxNum(a, a1, b, b1, c, c1));
-                break;
-            case 3:
-                printf("Same suit ");
-                printf("%d\n", getSameSuitMaxNum(a, a1, b, b1, c, c1));
-                break;
-            case 4:
-                printf("Pair ");
-                printf("%d\n", getPairMaxNum(a, a1, b, b1, c, c1));
-                break;
-            case 5:
-                printf("General ");
-                printf("%d\n", getGeneralMaxNum(a, a1, b, b1, c, c1));
-                break;
+    return 0;
+}
+void readCards(Card cards[], int n) {
+    for (int i = 0; i < n; i++) {
+        scanf("%d%c", &cards[i].rank, &cards[i].suit);
+    }
+}
+
+int findMaxRank(Card cards[], int n) {
+    int maxRank = 0;
+    for (int i = 0; i < n; i++) {
+        if (cards[i].rank > maxRank) {
+            maxRank = cards[i].rank;
+        }
+    }
+    return maxRank;
+}
+
+int isStraightFlush(Card cards[], int n) {
+    int isStraight = 1;
+    int isFlush = 1;
+    for (int i = 1; i < n; i++) {
+        if (cards[i].rank!= cards[i - 1].rank + 1) {
+            isStraight = 0;
+        }
+        if (cards[i].suit!= cards[i - 1].suit) {
+            isFlush = 0;
+        }
+    }
+    return isStraight && isFlush;
+}
+
+int isFourOfAKind(Card cards[], int n) {
+    if ((cards[0].rank == cards[1].rank && cards[1].rank == cards[2].rank) ||
+        (cards[1].rank == cards[2].rank && cards[2].rank == cards[0].rank) ||
+        (cards[2].rank == cards[0].rank && cards[0].rank == cards[1].rank)) {
+        return 1;
+    }
+    return 0;
+}
+
+
+int isFullHouse(Card cards[], int n) {
+    int ranks[13] = {0};
+    for (int i = 0; i < n; i++) {
+        ranks[cards[i].rank]++;
+    }
+    int hasThree = 0;
+    int hasPair = 0;
+    for (int i = 0; i < 13; i++) {
+        if (ranks[i] == 3) {
+            hasThree = 1;
+        } else if (ranks[i] == 2) {
+            hasPair = 1;
+        }
+    }
+    return hasThree && hasPair;
+}
+
+
+int isFlush(Card cards[], int n) {
+    for (int i = 1; i < n; i++) {
+        if (cards[i].suit!= cards[i - 1].suit) {
+            return 0;
+        }
+    }
+    return 1;
+}
+
+
+int isStraight(Card cards[], int n) {
+    int isStraight = 1;
+    int ranks[13] = {0};
+    for (int i = 0; i < n; i++) {
+        ranks[cards[i].rank]++;
+    }
+    int minRank = 14;
+    int maxRank = 0;
+    for (int i = 1; i <= 13; i++) {
+        if (ranks[i]) {
+            if (i < minRank) {
+                minRank = i;
+            }
+            if (i > maxRank) {
+                maxRank = i;
+            }
+            if (ranks[i] > 1) {
+                isStraight = 0;
+            }
+        }
+    }
+
+    if (ranks[1] && ranks[2] && ranks[3] && ranks[4] && ranks[13]) {
+        isStraight = 1;
+        minRank = 1;
+        maxRank = 5;
+    }
+    return isStraight && (maxRank - minRank == n - 1);
+}
+
+int isThreeOfAKind(Card cards[], int n) {
+    int ranks[13] = {0};
+    for (int i = 0; i < n; i++) {
+        ranks[cards[i].rank]++;
+    }
+    for (int i = 0; i < 13; i++) {
+        if (ranks[i] == 3) {
+            return 1;
+        }
+    }
+    return 0;
+}
+
+int isTwoPairs(Card cards[], int n) {
+    int ranks[13] = {0};
+    int pairCount = 0;
+    for (int i = 0; i < n; i++) {
+        ranks[cards[i].rank]++;
+    }
+    for (int i = 0; i < 13; i++) {
+        if (ranks[i] == 2) {
+            pairCount++;
+        }
+    }
+    return pairCount == 2;
+}
+
+int isOnePair(Card cards[], int n) {
+    int ranks[13] = {0};
+    for (int i = 0; i < n; i++) {
+        ranks[cards[i].rank]++;
+    }
+    for (int i = 0; i < 13; i++) {
+        if (ranks[i] == 2) {
+            return 1;
         }
     }
     return 0;
