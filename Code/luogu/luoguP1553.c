@@ -41,8 +41,10 @@ int main()
             int outposition=0;//去除零，即从有数的地方输出；
             int judge;
             for(int i=0;i<=end;i++){
-                if(out[i]!='0') outposition=i; 
-                break;
+                if(out[i]!='0') {
+                    outposition=i; 
+                    break;
+                }
             }
             for(int i=outposition;i<=end;i++){
                 printf("%c",out[i]);
@@ -50,16 +52,20 @@ int main()
             return 0;
         }
         case 2:{
+            
             for(int i=0,j=point-1;i<=point-1;i++,j--){
                 out[j]=in[i];
+                
             }
             for(int i=point+1,j=end;i<=end;i++,j--){
                 out[j]=in[i];
             }
-            int outposition1=0,outposition2=point+1;
+            int outposition1,outposition2;
             for(int i=0;i<=point-1;i++){
-                if(out[i]!='0') outposition1=i; 
-                break;
+                if(out[i]!='0') {
+                    outposition1=i;
+                    break; 
+                }
             }
             for(int i=point+1;i<=end;i++){
                 if(out[i]!='0'||out[i]!=0) outposition2=i;
@@ -71,6 +77,7 @@ int main()
             for(int i=point+1;i<=outposition2;i++){
                 printf("%c",out[i]);
             }
+            return 0;
         }
         case 3:{
             
@@ -83,21 +90,22 @@ int main()
             }
             int outposition1,outposition2;
             for(int i=0;i<=point-1;i++){
-                if(out[i]!) outposition1=i;
-                break; 
+                if(out[i]!='0') {
+                    outposition1=i;
+                    break; 
+                }
             }
-            /*for(int i=point+1;i<=end;i++){
+            for(int i=point+1;i<=end;i++){
                 if(out[i]!='0'||out[i]!=0) outposition2=i;
             }
             for(int i=outposition1;i<=point-1;i++){
                 printf("%c",out[i]);
-            }*/
-            printf("/\n");
-            printf("%d\n",outposition1);
-            printf("%d\n",outposition2);
+            }
+            printf("/");
             for(int i=point+1;i<=outposition2;i++){
                 printf("%c",out[i]);
             }
+            return 0;
         }
         case 4:{
             for(int i=0,j=end-1;i<end;i++,j--){
@@ -113,6 +121,7 @@ int main()
             for(int i=outposition;i<=end;i++){
                 printf("%c",out[i]);
             }
+            return 0;
         }
     }
     return 0;
