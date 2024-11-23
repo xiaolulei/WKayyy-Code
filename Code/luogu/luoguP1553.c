@@ -29,7 +29,10 @@ int main()
             break;
         }
     }
-    if(end==0) printf("%c",in[0]);
+    if(end==0) {
+        printf("%c",in[0]);
+        return 0;
+    }
     switch(flag){
         case 1:{
             for(int i=0,j=end;i<=end;i++,j--){
@@ -39,6 +42,7 @@ int main()
             int judge;
             for(int i=0;i<=end;i++){
                 if(out[i]!='0') outposition=i; 
+                break;
             }
             for(int i=outposition;i<=end;i++){
                 printf("%c",out[i]);
@@ -55,22 +59,61 @@ int main()
             int outposition1=0,outposition2=point+1;
             for(int i=0;i<=point-1;i++){
                 if(out[i]!='0') outposition1=i; 
+                break;
             }
             for(int i=point+1;i<=end;i++){
-                if(out[i]!='0') outposition2=i;
+                if(out[i]!='0'||out[i]!=0) outposition2=i;
             }
             for(int i=outposition1;i<=point-1;i++){
                 printf("%c",out[i]);
             }
-            printf('.');
-            for(int i=outposition2;i<=end;i++){
+            printf(".");
+            for(int i=point+1;i<=outposition2;i++){
                 printf("%c",out[i]);
             }
         }
         case 3:{
             
+            for(int i=0,j=point-1;i<=point-1;i++,j--){
+                out[j]=in[i];
+                
+            }
+            for(int i=point+1,j=end;i<=end;i++,j--){
+                out[j]=in[i];
+            }
+            int outposition1,outposition2;
+            for(int i=0;i<=point-1;i++){
+                if(out[i]!) outposition1=i;
+                break; 
+            }
+            /*for(int i=point+1;i<=end;i++){
+                if(out[i]!='0'||out[i]!=0) outposition2=i;
+            }
+            for(int i=outposition1;i<=point-1;i++){
+                printf("%c",out[i]);
+            }*/
+            printf("/\n");
+            printf("%d\n",outposition1);
+            printf("%d\n",outposition2);
+            for(int i=point+1;i<=outposition2;i++){
+                printf("%c",out[i]);
+            }
         }
-        case 4:
+        case 4:{
+            for(int i=0,j=end-1;i<end;i++,j--){
+                out[j]=in[i];
+            }
+            int outposition;
+            for(int i=0;i<=end;i++){
+                if(out[i]!='0') {
+                    outposition=i;
+                    break;
+                } 
+            }
+            for(int i=outposition;i<=end;i++){
+                printf("%c",out[i]);
+            }
+        }
     }
     return 0;
 }
