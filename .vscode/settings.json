@@ -62,6 +62,9 @@
     "random": "c",
     "stdio.h": "c",
     "sstream": "c",
-    "15.C": "cpp"
+    "15.C": "cpp",
+    "array": "c",
+    "string": "c",
+    "string_view": "c"
   }
 }
