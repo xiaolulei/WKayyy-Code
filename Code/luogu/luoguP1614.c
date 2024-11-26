@@ -14,7 +14,7 @@ int main()
     for(int i=m;i<=n;i++){
         int sum=0;
         for(int j=i;j>=i-m+1;j--){
-        sum+=num[i];
+        sum+=num[j];
         }
         //printf("\n%d\n",sum);
         if(min>sum) min=sum;
