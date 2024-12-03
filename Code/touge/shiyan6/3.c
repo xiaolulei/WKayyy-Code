@@ -10,7 +10,6 @@ int panda_(int n){
         return panda_(n-1)+panda_(n-4);
     }
 }
-
 int main()
 {
     int n;
