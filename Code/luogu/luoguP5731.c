@@ -68,9 +68,7 @@ int main(){
     char a[150];
     scanf("%d",&n);
 	getchar();
-    for(int i=0;i<n;i++){
-		scanf("%c",&a[i]);
-	}
+    scanf("%s",a);
     for(int i=0;i<5;i++){
         for(int j=0;j<n;j++){
             for(int s=0;s<3;s++){
