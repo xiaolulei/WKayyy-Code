@@ -1,4 +1,5 @@
 #include<stdio.h>
+void sort(int(*p[])[7],int n);
 int main()
 {
     int score[4][7]={{1,80,82,95,88,93,438},
@@ -6,11 +7,17 @@ int main()
                      {3,80,70,56,88,93,387},
                      {4,95,89,87,80,96,447}
                     };
-    void sort(int(*p[])[7],int);
+    
     int n=4,(*p[4])[7];
+    for(int i = 0; i < n; i++) {
+        p[i]=&score[i];
+    }
     sort(p,4);
     for(int i=0;i<n;i++){
-        
+        for(int j=0;j<7;j++){
+            printf("%d ",*(*p[i]+j));
+        }
+        printf("\n");
     }
     return 0;
 }

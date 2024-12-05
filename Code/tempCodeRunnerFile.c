@@ -1,0 +1,1 @@
+void sort(int(*p[])[7],int n);
