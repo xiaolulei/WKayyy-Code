@@ -1,6 +1,8 @@
 #include<stdio.h>
 int main()
 {
+
+    
     int n;
     char str[200];//第二行输入数据
     char result[5][500];
