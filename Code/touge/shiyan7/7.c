@@ -14,10 +14,19 @@ int main()
             scanf("%d",&B[i][j]);
         }
     }
-    for(int i=0;i<M;i++){
-        for(int j=0;j<P;j++){
-            
+    for(int i=0;i<M;i++) {
+        for(int j=0;j<P;j++) {
+            C[i][j] = 0;
+            for (int k=0;k<N;k++) {
+                C[i][j]+=(A[i][k]*B[k][j]);
+            }
         }
+    }
+    for(int i=0;i<M;i++) {
+        for(int j=0;j<P-1;j++) {
+            printf("%d ",C[i][j]);
+        }
+        printf("%d\n",C[i][P-1]);
     }
     return 0;
 }
