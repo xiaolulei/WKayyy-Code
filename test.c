@@ -1,25 +1,8 @@
-#include<stdio.h>
-#include<string.h>
-int count(char *str);
+#include <stdio.h>
 int main() {
-    char a[101];
-    scanf("%[^\n]",a);
-    int result=count(a);
-    printf("%d\n",result);
+    int num1 = 5;
+    int num2 = 3;
+    int sum = num1 + num2;
+    printf("The sum is: %d\n", sum);
     return 0;
-}
-int count(char *str){
-    int count=0;
-    int flag=1;
-    while(*str!='\0') {
-        if ((*str>=33 &&*str<=126)&&flag) {
-            count++;
-            flag=0;
-        }
-        if(*str==' ') {
-            flag=1;
-        }
-        str++;
-    }
-    return count;
 }

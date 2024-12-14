@@ -1,2 +1,1 @@
-
-    printf("%d", result);
+    int sum = num1 + num2;
