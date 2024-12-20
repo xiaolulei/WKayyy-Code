@@ -1,1 +1,2 @@
-    int sum = num1 + num2;
+
+    char m[100];

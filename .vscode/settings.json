@@ -57,6 +57,11 @@
   "C_Cpp_Runner.useLinkTimeOptimization": false,
   "C_Cpp_Runner.msvcSecureNoWarnings": false,
   "files.associations": {
-    "WUSCTF2020.C": "cpp"
+    "WUSCTF2020.C": "cpp",
+    "2.C": "cpp",
+    "luoguP5016.C": "cpp",
+    "stdio.h": "c",
+    "sstream": "c",
+    "typeinfo": "c"
   }
 }
