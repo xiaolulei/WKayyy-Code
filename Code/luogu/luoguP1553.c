@@ -8,13 +8,14 @@ int main()
     //百分数的分子一定是整数，百分数只改变数字部分。
     char in[100]={0};
     char out[100];
-    gets(in);
-    int end,point,flag=1;//整数为1，小数为2，分数为3，百分数为4；
-    for(int i=0;i<=22;i++){
+    scanf("%s",in);
+    int end=-1, point=-1, flag=1; // 初始化 end 和 point
+    // 整数为1，小数为2，分数为3，百分数为4；
+    for(int i=0;i<100;i++){
         if(in[i]==0){ 
             end=i-1;
             break;
-            }
+        }
         if(in[i]=='.') {
             point=i;
             flag=2;
@@ -29,7 +30,7 @@ int main()
             break;
         }
     }
-    if(end==0) {
+    if(end==-1) {
         printf("%c",in[0]);
         return 0;
     }
@@ -129,20 +130,23 @@ int main()
             for(int i=0,j=end-1;i<end;i++,j--){
                 out[j]=in[i];
             }
-            int outposition;
-            for(int i=0;i<=end;i++){
+            int outposition = -1;
+            for(int i=0;i<end;i++){
                 if(out[i]!='0') {
                     outposition=i;
                     break;
                 } 
             }
-            for(int i=outposition;i<=end;i++){
-                printf("%c",out[i]);
+            if(outposition==-1) {
+                printf("0%%");
+            } else {
+                for(int i=outposition;i<end;i++){
+                    printf("%c",out[i]);
+                }
+                printf("%%");
             }
-            printf("%%");
             return 0;
         }
-        
     }
     return 0;
 }
