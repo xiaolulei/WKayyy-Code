@@ -5,11 +5,14 @@ int main()
 {
     char a[505],b[505];
     int a1[505]={0},b1[505]={0},c[505]={0};
+
     scanf("%s",a);
     getchar();
     scanf("%s",b);
+
     int lena=strlen(a);
     int lenb=strlen(b);
+    
     for(int i=0;i<lena;i++){
         a1[lena-1-i]=a[i]-'0';
     }
