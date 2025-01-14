@@ -30,4 +30,16 @@ int main()
     }
     return 0;
 }
-
+#include<stdio.h>
+int main(){
+    int a,b;
+    scanf("%d",&a);
+    for(int i=1;i<=a;i++){
+        int n;
+        n+=1;   
+        int a,b,c;
+        for(int i=1;i<=n;i++){
+            scanf("%d",&n);
+        }
+    }
+}
