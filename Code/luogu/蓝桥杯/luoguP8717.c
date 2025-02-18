@@ -12,7 +12,7 @@ int main()
         if(temp>max) max=temp;
         if(temp<min) min=temp; 
     }
-    sum/=7.0;
+    sum/=n;
     sum=(int)(sum*100.0+0.5)/100.0;
     printf("%d\n%d\n%.2lf\n",max,min,sum);
     return 0;

@@ -19,5 +19,6 @@ for i in encodedflag:
         flag += 'a'
     else:
         flag += i
-print("flag is:")
+
+
 print(base64.b64decode(flag).decode())

@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": true,
-      "cwd": "d:/GitCode/WKayyy-Code",
-      "program": "d:/GitCode/WKayyy-Code/build/Debug/outDebug",
+      "cwd": "d:/GitCode/WKayyy-Code/Code/luogu",
+      "program": "d:/GitCode/WKayyy-Code/Code/luogu/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [
