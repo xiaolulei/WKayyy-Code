@@ -1,7 +1,2 @@
-#include<stdio.h>
-int main()
-{
 
-    printf("Hello world.");
-    return 0;
-}
+    int temp=gcd(W,H);
