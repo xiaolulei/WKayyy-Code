@@ -30,13 +30,15 @@ void TabShow() {
             system("pause");
             break;
         }
-	    if ((fpIdx=fopen("8888SIDX.dat", "rb"))==0) flag=0;   
+	    if ((fpIdx=fopen("8888SIDX.dat", "rb"))==0) flag=0;  //这里我把学生和老师的索引分别创建了一个新的文件
         else flag=1;
         if (flag) { 
-            do {
-                printf("\n\n\n\t\t Logic sort using index file?(y/n): ");
+            while (!(ch[0]=='y' || ch[0]=='n' || ch[0]=='Y' || ch[0]=='N')){
+                printf("\n-------------------------------------------------");
+                printf("\n\tLogic sort using index file?(y/n): ");
+                getchar();
                 gets(ch);
-            } while (!(ch[0]=='y' || ch[0]=='n' || ch[0]=='Y' || ch[0]=='N'));
+            }
             if (ch[0]=='n' || ch[0]=='N') flag=0;
         }
         system("cls");
@@ -52,8 +54,8 @@ void TabShow() {
                 printf("%-2c  ", t.sex);
                 printf("%4d-%2d-%2d  ", t.birthday.year, t.birthday.month, t.birthday.day);
                 printf("%-15s ", t.phone);
-                printf("%3d   ", t. counts);
-                printf("%6.2f\n", t. aver);
+                printf("%3d   ", t.counts);
+                printf("%6.2f\n", t.aver);
                 n++;
                 fread(&tIdx, sizeof(StudentIdxTab), 1, fpIdx);  
                 if (n%20==0 || feof(fpIdx)) {   
@@ -112,7 +114,9 @@ void TabShow() {
         else flag=1;
         if (flag) { 
             do {
-                printf("\n\n\n\t\t Logic sort using index file?(y/n): ");
+                printf("\n-------------------------------------------------");
+                printf("\n\tLogic sort using index file?(y/n): ");
+                getchar();
                 gets(ch);
             } while (!(ch[0]=='y' || ch[0]=='n' || ch[0]=='Y' || ch[0]=='N'));
             if (ch[0]=='n' || ch[0]=='N') flag=0;
@@ -135,7 +139,7 @@ void TabShow() {
                 n++;
                 fread(&tIdx, sizeof(CourseIdxTab), 1, fpIdx);  
                 if (n%20==0 || feof(fpIdx)) {   
-                    printf("\n===============================================================================\n\n");
+                    printf("\n\n=====================================================================\n\n");
                     printf("\t\t Press any key to continue. ");
                     getchar();   
                     system("cls");  
@@ -157,7 +161,7 @@ void TabShow() {
                 fread(&t, sizeof(CourseTab), 1, fp); 
                 if (n%20==0 || feof(fp)) 
                 {    
-                    printf("\n===============================================================================\n\n");
+                    printf("\n\n=====================================================================\n\n");
                     printf("\t\t Press any key to continue. ");
                     getchar();  
                     system("cls"); 
@@ -216,32 +220,40 @@ void TabShow() {
                 system("pause");
                 break;
             }
-            system("cls");
             printf("\nnum         name          courseNum   courseName            credit  score\n");
             printf("\n===============================================================================\n\n");
-            while(fread(&st,sizeof(ScoreTab),1,fp3)==1)
+            while(fread(&st,sizeof(ScoreTab),1,fp3))
             {
-                printf("%-12s",st.num);
+                //printf("%-12s",st.num);
+                rewind(fp1);
                 while(fread(&bt,sizeof(StudentTab),1,fp1)==1)
                 {
-                    if(strcmp(st.num,bt.num))
+                    if(strcmp(st.num,bt.num)==0)
                     {
-                        printf("%-18s",bt.name);
+                        //printf("%-18s",bt.name);
                         break;
                     }
                 }
                 printf("%-12s",st.coursenum);
+                rewind(fp2);
                 while(fread(&ct,sizeof(CourseTab),1,fp2)==1)
                 {
-                    if(strcmp(st.coursenum,ct.coursenum))
+                    if(strcmp(st.coursenum,ct.coursenum)==0)
                     {
-                        printf("%-22s",ct.coursename);
-                        printf("%-8d", ct.credit);
+                        //printf("%-22s",ct.coursename);
+                        //printf("%-8d",ct.credit);
                         break;
                     }
                 }
+                n++;
+                printf("%-12s",st.num);
+                printf("%-18s",bt.name);
+                printf("%s",st.coursenum);
+                printf("%-22s",ct.coursename);
+                printf("%-8d",ct.credit);
                 printf("%-12d",st.score);
-                if (n%20==0 || feof(fp3)) 
+                
+                if (n%20==0) 
                 {    
                     printf("\n===============================================================================\n\n");
                     printf("\t\t Press any key to continue. ");
@@ -256,7 +268,12 @@ void TabShow() {
             printf("\n\n\t\t Not find record   ");   
             system("pause");
         }
-            fclose(fp1);    fclose(fp2);    fclose(fp3);
+        else
+        {
+            printf("\n\n===============================================================================\n\n");
+            system("pause");
+        }
+            fclose(fp1);    fclose(fp2);    fclose(fp3);   fclose(fp4);   fclose(fp5);
             break;
         }
     }
@@ -483,8 +500,6 @@ void InputData()
                     break;   
                 }
             }
-            cout << find1 << find2 << find3;
-            system("pause");
             if (!find1 || !find2 || find3) {  
                 if (!find1)    
                     printf("\n\t The student num: %s has not existed, can not input score! ", st.num);
@@ -499,8 +514,8 @@ void InputData()
                 if (ch[0]=='y' ||ch[0]=='Y') goto F3;  
                 else { fclose(fp1);    fclose(fp2);    fclose(fp3);    return; }
             }
-            strcpy(num,t.num);
-            strcpy(coursenum,t.coursenum);
+            strcpy(t.num,num);
+            strcpy(t.coursenum,coursenum);
             printf("\n\t     score : ");    cin >> t.score;
             fwrite(&t, sizeof(ScoreTab), 1, fp3);
             printf("================================================================");
