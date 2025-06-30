@@ -1,6 +1,7 @@
 #include <iostream>
 #include <cstring>
 #include <cstdlib>
+#include <algorithm>
 
 using namespace std;
 
@@ -23,7 +24,63 @@ struct Score
     float EnglishScore;
     float PhysicsScore;
     float ChemistryScore;
-}StudentScore[100];
+    float Score;
+}StudentScore;
+void quick_sort(Score q[],int l, int r);
+void StudentSort();
+void InitiateFile();
+bool InputStudenInformation(FILE *fp);
+
+
+
+void quick_sort(Score q[],int l,int r){
+    if(l>=r) return;
+    int i=l-1,j=r+1;
+    float x=q[(l + r) >> 1].Score;
+    while(i<j){
+        do i++;while(q[i].Score<x);
+        do j--;while(q[j].Score>x);
+        if(i<j) swap(q[i],q[j]);
+    }
+    quick_sort(q,l,j);
+    quick_sort(q,j+1,r);
+}
+
+
+void StudentSort()
+{
+    //我们假设学生数据不超过100
+    Score temp[100];
+    FILE *fp;
+    if((fp = fopen("StudentGrade.dat","rb"))==NULL)
+    {
+        system("pls");
+        printf("\nCan not open StudentGraade correctly!\n");
+        system("pause");
+        exit(0);
+    }
+    int pos = 0;
+    while(fread(&temp[pos],sizeof(Score),1,fp)==1) pos++;
+    fclose(fp);
+    fp = fopen("StudentGrade.dat","wb");
+    if (fp == NULL) {
+        cout << "Error opening file for writing!\n";
+        exit(0);
+    }
+
+    quick_sort(temp,0,pos-1);
+
+    for(int i = 0;i < pos; i++)
+    {
+        
+        if(fwrite(&temp[i],sizeof(Score),1,fp)!=1)
+        {
+            printf("\nError writing to file! System Stop !\n");
+            exit(0);
+        }
+    }
+    fclose(fp);
+}
 
 void InitiateFile()
 {
@@ -39,7 +96,7 @@ void InitiateFile()
     }
     char ch_again;
     printf("\n--------------------------------------------------------------------------------");
-    printf("\nThe initialization of file will lose all data in data files! Are you sure?(y/n)");
+    printf("\n\nThe initialization of file will lose all data in data files! Are you sure?(y/n)");
     while (ch_again!='y' && ch_again!='Y' && ch_again!='n' && ch_again!='N'){
         cin >> ch_again;
         if(ch_again == 'y' || ch_again == 'Y') break;
@@ -59,15 +116,15 @@ bool InputStudenInformation(FILE *fp)
     system("cls");
     printf("\n\t\tStudents Information System\n");
     printf("\n================================================================\n");
-    printf("Please Input The Student's Information:  ");
+    printf("\nPlease Input The Student's Information:  ");
     printf("\n-----------------------------------------");
-    printf("\nPlease Input Student's num:  "); scanf("%d",&t.StudentNum); 
+    printf("\n\nPlease Input Student's num:  "); scanf("%d",&t.StudentNum); 
     if(t.StudentNum==0)
     {
             printf("--------------------------------------------------------------");
-            printf("\n\tUser stops input, the program closes!");
+            printf("\n\n\t\tUser stops input!\n");
             printf("\n--------------------------------------------------------------");
-            exit(0);
+            return false;
     }
     rewind(fp);
     bool exists = false;
@@ -82,7 +139,7 @@ bool InputStudenInformation(FILE *fp)
         char temp;
         system("cls");
         printf("================================================================");
-        printf("\nThe student %d has existed !  Input next? (y/n) :", t.StudentNum);
+        printf("\n\nThe student %d has existed !  Input next? (y/n) :", t.StudentNum);
         while (temp!='y' && temp!='Y' && temp!='n' && temp!='N') {
             cin >> temp;
             if (temp == 'y' || temp == 'Y') 
@@ -91,7 +148,7 @@ bool InputStudenInformation(FILE *fp)
             {
                 system("cls");
                 printf("--------------------------------------------------------------");
-                printf("\n\tUser stops input, the program closes!");
+                printf("\n\n\t\tUser stops input!\n");
                 printf("\n--------------------------------------------------------------");
                 return false;
             }
@@ -103,7 +160,7 @@ bool InputStudenInformation(FILE *fp)
     if(t.ChineseScore>100||t.ChineseScore<0)
     {
         printf("--------------------------------------------------------------");
-        printf("\n\t\tPlease Enter Correct Score!");
+        printf("\n\n\t\tPlease Enter Correct Score!\n");
         printf("\n--------------------------------------------------------------");
         goto CHI;
     }
@@ -111,7 +168,7 @@ bool InputStudenInformation(FILE *fp)
     if(t.MathScore>100||t.MathScore<0)
     {
         printf("--------------------------------------------------------------");
-        printf("\n\t\tPlease Enter Correct Score!");
+        printf("\n\n\t\tPlease Enter Correct Score!\n");
         printf("\n--------------------------------------------------------------");
         goto MATH;
     }
@@ -119,7 +176,7 @@ bool InputStudenInformation(FILE *fp)
     if(t.EnglishScore>100||t.EnglishScore<0)
     {
         printf("--------------------------------------------------------------");
-        printf("\n\t\tPlease Enter Correct Score!");
+        printf("\n\n\t\tPlease Enter Correct Score!\n");
         printf("\n--------------------------------------------------------------");
         goto ENG;
     }
@@ -127,7 +184,7 @@ bool InputStudenInformation(FILE *fp)
     if(t.PhysicsScore>100||t.PhysicsScore<0)
     {
         printf("--------------------------------------------------------------");
-        printf("\n\t\tPlease Enter Correct Score!");
+        printf("\n\n\t\tPlease Enter Correct Score!\n");
         printf("\n--------------------------------------------------------------");
         goto PHY;
     }
@@ -135,11 +192,11 @@ bool InputStudenInformation(FILE *fp)
     if(t.ChemistryScore>100||t.ChemistryScore<0)
     {
         printf("--------------------------------------------------------------");
-        printf("\n\t\tPlease Enter Correct Score!");
+        printf("\n\n\t\tPlease Enter Correct Score!\n");
         printf("\n--------------------------------------------------------------");
         goto CHE;
     }
-
+    t.Score = t.ChemistryScore + t.ChineseScore + t.EnglishScore + t.MathScore + t.PhysicsScore ;
     fseek(fp, 0, SEEK_END);
     if (fwrite(&t, sizeof(Score), 1, fp) != 1) {
         printf("\nError writing to file!\n");
@@ -155,9 +212,32 @@ int main()
     if((fp = fopen("StudentGrade.dat","a+b")) == NULL)
     {
         printf("--------------------------------------------------------------");
-        printf("\n\tThe file is not initialized. Please initialize it first.");
+        printf("\n\n\tThe file is not initialized. Please initialize it first.\n");
         printf("\n--------------------------------------------------------------");
     }
     while(InputStudenInformation(fp));
+    printf("\n");
+    system("pause");
+    system("cls");
+    printf("-----------------------------------------------------------------");
+    printf("\n\n\tDo you want to sort the data by grade values? : (y/n)");
+    char command;
+    do
+    {
+        command = getchar();
+    }while(command != 'Y' && command != 'y' && command != 'N' && command !='n');
+    if(command == 'Y' || command == 'y' ) 
+    {
+        StudentSort();
+        printf("\n-----------------------------------------------------------------\n");
+        printf("")
+    }
+    else if(command == 'N' || command == 'n' )
+    {
+        system("cls");
+        printf("-----------------------------------------------------");
+        printf("\n\nThe program closes cause the user stops input.\n\n");
+        printf("-----------------------------------------------------");
+    }
     return 0;
 }
