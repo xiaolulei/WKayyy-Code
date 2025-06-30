@@ -5,6 +5,256 @@
 
 using namespace std;
 
+void ModiFile() {      // 修改文件中的记录
+    char xz[8];
+    system("cls");
+    printf("\n\n                    0--return");
+    printf("\n\n                    1--student infomation");
+    printf("\n\n                    2--course infomation");
+    printf("\n\n                    3--student score");
+    printf("\n                    Please choise: (0, 1, 2, 3):  ");
+    do {
+        gets(xz);
+    } while (xz[0]!='0' && xz[0]!='1' && xz[0]!='2' && xz[0]!='3');
+    switch (xz[0]) {
+        case '0': return;
+        case '1': {      // 按学号修改学生基本信息
+            int find, repeat;    
+            long pos;    
+            char xz[8], ch[30], num[10];    
+            FILE *fp;
+            StudentTab t, x;      // 定义学生表的结构体变量t, x
+	    if ((fp=fopen("8888STUD.dat", "r+b"))==0) { 
+                printf("\n\nCannot open STUDENT data file!\n");
+                system("pause");
+                break;
+            }
+         F1: system("cls");
+            printf("\n\t\tPlease input Student's num:  ");
+            gets(num);    // 输入需修改学生记录的学号到字符数组num
+            find=0;
+            rewind(fp);    // 复位到学生文件头
+            pos=ftell(fp);  // 保留要读取的学生记录在学生文件中的位移量，以便重新定位该记录进行更新
+            fread(&t, sizeof(StudentTab), 1, fp);   // 从学生文件中读取一个学生记录
+            while (!feof(fp)) {  // 需要在学生文件中找到学号num的学生记录，找到后再进行修改
+                if (!feof(fp) && strcmp(t.num, num)==0) {
+                    // 如果读取的学生记录是给定学号num的学生记录，即找到了需要修改的学生记录
+                    find=1;    
+                    break;    // 结束查找
+                }
+                pos=ftell(fp);  // 保留要读取的学生记录在学生文件中的位移量，以便重新定位该记录进行更新
+                fread(&t, sizeof(StudentTab), 1, fp);   // 从学生文件中读取一个学生记录
+            }
+            if (find) {    // 如果找到了给定学号num的学生记录，则进行修改
+            F11: system("cls");
+                // 在屏幕上显示该学生记录的原来值
+                printf("\n\n==================================================");
+                printf("\n num :      %-s", t.num);
+                printf("\n name :     %-s", t.name);
+                printf("\n sex :      %-c", t.sex);
+                printf("\n birthday : %d-%d-%d", t.birthday.year, t.birthday.month, t.birthday.day);
+                printf("\n phone :    %-s", t.phone);
+                printf("\n==================================================");
+                // 输入该学生记录的新值（直接回车表示该属性的值不需要修改）
+                printf("\n\nNew num : ");    
+                gets(ch);   // 输入一个修改后的学号到字符数组ch
+                if (strlen(ch)>0 && strcmp(num, ch)!=0) {  // 如果输入了一个新的学号ch
+                    repeat=0;
+                    rewind(fp);    // 复位到学生文件头
+                    fread(&x, sizeof(StudentTab), 1, fp);    // 从学生文件中读取一个学生记录
+                    while (!feof(fp)) {  // 判断新输入的学号ch是否在学生文件中已经存在
+                        if (strcmp(x.num, ch)==0) {    // 如果在学生文件中找到了给定学号ch的学生记录
+                            repeat=1;    break;    // 结束查找
+                        }
+                        fread(&x, sizeof(StudentTab), 1, fp);    // 从学生文件中读取一个学生记录
+                    }
+                    if (repeat) {    // 修改后的学号ch在学生文件中已经存在，重复了！
+                        printf("\n\n\n\tThe student %s has existed!  Continue modify? (y/n)  ", ch);
+                        do{
+                            gets(ch);
+                            if (ch[0]=='y' || ch[0]=='Y') goto F11; 
+                            else 
+                            { 
+                                fclose(fp);  
+                                return;
+                            }
+                        }while (ch[0]!='y' && ch[0]!='Y' && ch[0]!='n' && ch[0]!='N') ;
+                    }
+                    strcpy(t.num, ch);    // 将学号ch字符串拷贝到学生结构体变量t的学号成员num
+                }
+                printf(" name : " );    gets(ch);    // 继续修改学生的其他成员
+                if (strlen(ch)>0) strcpy(t.name, ch);  // 如果输入了新的值，则更新学生结构体变量t的相应成员值
+                printf(" sex : ");    gets(ch);
+                if (strlen(ch)>0) t.sex=ch[0];
+                printf(" birthday : year:  " );    gets(ch);
+                if (strlen(ch)>0) t.birthday.year=atoi(ch);
+                printf("           month: " );    gets(ch);
+                if (strlen(ch)>0) t.birthday.month=atoi(ch);
+                printf("           day:   " );    gets(ch);
+                if (strlen(ch)>0) t.birthday.day=atoi(ch);
+                printf(" phone :" );    gets(ch);
+                if (strlen(ch)>0) strcpy(t.phone, ch);
+                printf("==================================================");
+                fseek(fp, pos, SEEK_SET);    // 在学生文件中定位正在修改的学生记录
+                fwrite(&t, sizeof(StudentTab), 1, fp);  // 用学生结构体变量t更新学生文件中已定位的学生记录内容
+            } else printf("\n\n\n\t\tNo find record.\n");
+            do {
+                printf("\n\n\t\tModify another record? (y/n) ");
+                gets(ch);
+            } while (!(ch[0]=='y' || ch[0]=='n' || ch[0]=='Y' || ch[0]=='N'));
+            if (ch[0]=='y' || ch[0]=='Y') goto F1;    // 实际上是构成循环
+            else fclose(fp);
+            break;
+        }
+        case '2': {
+            int find, repeat;    
+            long pos;    
+            char xz[8], ch[30], num[10];    
+            FILE *fp;
+            CourseTab t, x;      
+	    if ((fp=fopen("8888COUR.dat", "r+b"))==0) { 
+                printf("\n\nCannot open COURSE data file!\n");
+                system("pause");
+                break;
+            }
+         F2: system("cls");
+            printf("\n\t\tPlease input Course's num:  ");
+            gets(num);    
+            find=0;
+            rewind(fp);    
+            pos=ftell(fp);  
+            while (fread(&t, sizeof(CourseTab), 1, fp)) 
+            {  
+                if (!feof(fp) && strcmp(t.coursenum, num)==0) {
+                    find=1;    
+                    break;    // 结束查找
+                }
+                pos=ftell(fp);  
+            }
+            if (find) 
+            {
+                F21: system("cls");
+                printf("\n\n==================================================");
+                printf("\n Coursenum :      %-s", t.coursenum);
+                printf("\n Couresename :     %-s", t.coursename);
+                printf("\n Credit :      %-d", t.credit);
+                printf("\n Coursehour : %-d",  t.coursehour);
+                printf("\n Teachername :    %-s", t.teachername);
+                printf("\n==================================================");
+                printf("\n\n New Coursenum : ");    
+                gets(ch);   // 输入一个修改后的学号到字符数组ch
+                if (strlen(ch)>0 && strcmp(num, ch)!=0) 
+                {
+                    repeat=0;
+                    rewind(fp);    // 复位到学生文件头
+                    while (fread(&x, sizeof(CourseTab), 1, fp)) 
+                    {  // 判断新输入的学号ch是否在学生文件中已经存在
+                        if (strcmp(x.coursenum, ch)==0) 
+                        {    // 如果在学生文件中找到了给定学号ch的学生记录
+                            repeat=1;   
+                            break;    // 结束查找
+                        }
+                    }
+                    if (repeat) 
+                    { 
+                        printf("\n\n\n\tThe Course %s has existed!  Continue modify? (y/n)  ", ch);
+                        do{
+                            gets(ch);
+                            if (ch[0]=='y' || ch[0]=='Y') goto F21; 
+                            else 
+                            { 
+                                fclose(fp);  
+                                return;
+                            }
+                        }while (ch[0]!='y' && ch[0]!='Y' && ch[0]!='n' && ch[0]!='N') ;
+                    }
+                    strcpy(t.coursenum, ch);    // 将学号ch字符串拷贝到学生结构体变量t的学号成员num
+                }
+                printf(" Coursename : " );    gets(ch);    // 继续修改学生的其他成员
+                if (strlen(ch)>0) strcpy(t.coursename, ch);  // 如果输入了新的值，则更新学生结构体变量t的相应成员值
+                printf(" Creadit : ");     gets(ch);
+                if (strlen(ch)>0) t.credit=atoi(ch);
+                printf(" Coursehour : " );    gets(ch);
+                if (strlen(ch)>0) t.coursehour=atoi(ch);
+                printf(" Teachername :" );    gets(ch);
+                if (strlen(ch)>0) strcpy(t.teachername, ch);
+                printf("==================================================");
+                fseek(fp, pos, SEEK_SET);    // 在学生文件中定位正在修改的学生记录
+                fwrite(&t, sizeof(CourseTab), 1, fp);  
+            } 
+            else 
+            printf("\n\n\n\t\tNo find record.\n");
+            do 
+            {
+                printf("\n\n\t\tModify another record? (y/n) ");
+                gets(ch);
+            } while (!(ch[0]=='y' || ch[0]=='n' || ch[0]=='Y' || ch[0]=='N'));
+            if (ch[0]=='y' || ch[0]=='Y') goto F2;    // 实际上是构成循环
+            else fclose(fp);
+            break;
+        }
+        case '3': {
+			int find, repeat;    
+            long pos;    
+            char xz[8], ch[30], num[10];    
+            FILE *fp;
+            ScoreTab t, x;      // 定义学生表的结构体变量t, x
+	    if ((fp=fopen("8888SCOR.dat", "r+b"))==0) { 
+                printf("\n\nCannot open SCORE data file!\n");
+                system("pause");
+                break;
+            }
+         F3: system("cls");
+            printf("\n\t\tPlease input Student's num:  ");
+            gets(num);   
+            find=0;
+            rewind(fp);   
+            pos=ftell(fp);  
+            while (fread(&t, sizeof(ScoreTab), 1, fp)) {
+                if (!feof(fp) && strcmp(t.num, num)==0) {
+                    find=1;    
+                    break;    
+                }
+                pos=ftell(fp);  // 保留要读取的学生记录在学生文件中的位移量，以便重新定位该记录进行更新
+            }
+            if (find) {    // 如果找到了给定学号num的学生记录，则进行修改
+                system("cls");
+                // 在屏幕上显示该学生记录的原来值
+                printf("\n\n==================================================");
+                printf("\n Num :      %-s", t.num);
+                printf("\n Coursenum :     %-s", t.coursenum);
+                printf("\n Normalscore :      %-d", t.normalscore);
+                printf("\n Testscore : %d", t.testscore);
+                printf("\n Score :    %-d", t.score);
+                printf("\n==================================================");
+                //因为成绩与其余两项不同，所以不进行查重，直接进行修改数据
+                printf("\nPlease Enter New Score : \n");
+                printf("--------------------------------------------------");
+                printf("\n Normalscore : " );    gets(ch);
+                if (strlen(ch)>0) t.normalscore=atoi(ch);
+                printf(" Testscore : " );    gets(ch);
+                if (strlen(ch)>0) t.testscore=atoi(ch);
+                printf(" Score :    " );    gets(ch);
+                if (strlen(ch)>0) t.score=atoi(ch);
+                printf("==================================================");
+                fseek(fp, pos, SEEK_SET);    
+                fwrite(&t, sizeof(ScoreTab), 1, fp);
+            } 
+            else 
+            printf("\n\n\n\t\tNo find record.\n");
+            do {
+                printf("\n\n\t\tModify another record? (y/n) ");
+                gets(ch);
+            } while (!(ch[0]=='y' || ch[0]=='n' || ch[0]=='Y' || ch[0]=='N'));
+            if (ch[0]=='y' || ch[0]=='Y') goto F3;    // 实际上是构成循环
+            else fclose(fp);
+            break;
+            system("pause");
+            break;
+        }
+    }
+}
+
 void TabShow() { 
     int num;
     system("cls");
@@ -555,6 +805,8 @@ int main()
         InputData();
         goto Start;
         case 2:
+        ModiFile();
+        goto Start;
         break;
         case 3:
         printf("3");
