@@ -5,6 +5,193 @@
 
 using namespace std;
 
+void FindRec() {     /*记录方式查找*/
+    char xz[8];
+    system("cls");
+    printf("\n\n                    0--return");
+    printf("\n\n                    1--student infomation");
+    printf("\n\n                    2--course infomation");
+    printf("\n\n                    3--student score");
+    printf("\n\n                    Please choise: (0, 1, 2, 3):  ");
+    do {
+        gets(xz);
+    } while (xz[0]!='0' && xz[0]!='1' && xz[0]!='2' && xz[0]!='3');
+    system("cls");
+    switch(xz[0]){
+        case '0': return;
+        case '1': {   // 按学号查找学生基本信息
+            int find, flag=0, len=0, start, end, mid;    
+            char ch[30], num[10];    
+            FILE *fp, *fpIdx;
+            StudentTab t;      // 定义学生表的结构体变量t
+            StudentIdxTab idx[100];     // 定义学生索引表的结构体数组idx[100]
+	    if ((fp=fopen("8888STUD.dat", "rb"))==0) { 
+                printf("\n\nCannot open STUDENT data file!\n");
+                system("pause");
+                break;
+            }
+	    if ((fpIdx=fopen("8888SIDX.dat", "rb"))!=0) {
+                if(fread(&idx[len], sizeof(StudentIdxTab), 1, fpIdx)) flag = 1;  // 从学生索引文件中读取一个索引项
+                while (!feof(fpIdx)) {    // 将学生索引文件中的索引项依次读入学生索引结构体数组idx中
+                    len++;    // 学生索引文件中索引项的个数
+                    fread(&idx[len], sizeof(StudentIdxTab), 1, fpIdx);   // 从学生索引文件中读取一个索引项
+                }
+            }
+         F1: printf("\n\nPlease input Student's num:  ");
+            gets(num);    // 输入需修改学生记录的学号到字符数组num
+            find=0;
+            if (flag) {   // 存在学生索引文件时，则在学生索引文件中进行折半查找——利用索引文件可加快查找速度
+                start=0; end=len-1;  // 在学生索引结构体数组idx中折半查找索引码值为num的索引项
+                while (start<=end) {
+                    mid=(start+end)/2;
+                    if (strcmp(idx[mid].num, num)<0)
+                        start=mid+1;    // 往右继续折半查找
+                    else if (strcmp(idx[mid].num, num)>0)
+                        end=mid-1;    // 往左继续折半查找
+                    else break;         // 找到了待查找学生记录的索引项(第m个索引项)，结束查找
+                }
+                if (start<=end) {  // 折半查找成功，该学生记录在学生文件中的位移量是idx[mid].offset
+                    find=1;
+                    fseek(fp, idx[mid].offset, SEEK_SET);    // 在学生文件中定位待查找的学生记录
+                    fread(&t, sizeof(StudentTab), 1, fp);   // 从学生文件中读取一个学生记录
+                }
+                // 说明：也可以直接针对学生索引文件进行折半查找
+            } else {    // 不存在学生索引文件时，则在学生文件中进行顺序扫描查找
+                rewind(fp);    // 复位到学生文件头
+                fread(&t, sizeof(StudentTab), 1, fp);   // 从学生文件中读取一个学生记录
+                while (!feof(fp)) {    // 在学生文件中顺序查找学号num的学生记录，找到后再显示
+                    if (strcmp(t.num, num)==0) {   // 如果在学生文件中找到了给定学号num的学生记录
+                        find=1;    break;     // 找到了，则结束顺序查找
+                    }
+                    fread(&t, sizeof(StudentTab), 1, fp);   // 从学生文件中读取一个学生记录
+                }
+            }
+            system("cls");
+            if (find) {    // 如果找到了，则显示该学生信息
+                // 在屏幕上显示该学生记录
+                printf("\n\n===================================================");
+                printf("\n num :     %-s", t.num);
+                printf("\n name :    %-s", t.name);
+                printf("\n sex :     %-c", t.sex);
+                printf("\n birthday: %d-%d-%d", t.birthday.year, t.birthday.month, t.birthday.day);
+                printf("\n phone :   %-s", t.phone);
+                printf("\n counts :  %d", t.counts);
+                printf("\n average : %.2f", t.aver);
+                printf("\n==================================================");
+            } else { system("cls");    printf("\n\n\t\tNot find record"); }
+            do {
+                printf("\n\nCountinue?(y/n): ");
+                gets(ch);
+            } while (!(ch[0]=='y' || ch[0]=='n' || ch[0]=='Y' || ch[0]=='N'));
+            if (ch[0]=='y' || ch[0]=='Y') goto F1;    // 实际上是构成循环
+            else fclose(fp);
+            break;
+        }
+        case '2': {
+            int find, flag=0, len=0, start, end, mid;    char ch[30], num[10];    FILE *fp, *fpIdx;
+            CourseTab t;      // 定义学生表的结构体变量t
+            CourseIdxTab idx[100];     // 定义学生索引表的结构体数组idx[100]
+	    if ((fp=fopen("8888COUR.dat", "rb"))==0) { 
+                printf("\n\nCannot open COURSE data file!\n");
+                system("pause");
+                break;
+            }
+	    if ((fpIdx=fopen("8888CIDX.dat", "rb"))!=0) {
+                if(fread(&idx[len], sizeof(CourseIdxTab), 1, fpIdx))  flag = 1;   
+                while (!feof(fpIdx)) {  
+                    len++;    // 学生索引文件中索引项的个数
+                    fread(&idx[len], sizeof(CourseIdxTab), 1, fpIdx);   // 从学生索引文件中读取一个索引项
+                }
+            }
+         F2: printf("\n\nPlease input Course's num:  ");
+            gets(num);    
+            find=0;
+            if (flag) {   
+                start=0; end=len-1;  // 在学生索引结构体数组idx中折半查找索引码值为num的索引项
+                while (start<=end) {
+                    mid=(start+end)/2;
+                    if (strcmp(idx[mid].coursenum, num)<0)
+                        start=mid+1;    // 往右继续折半查找
+                    else if (strcmp(idx[mid].coursenum, num)>0)
+                        end=mid-1;    // 往左继续折半查找
+                    else break;         // 找到了待查找学生记录的索引项(第m个索引项)，结束查找
+                }
+                if (start<=end) {  // 折半查找成功，该学生记录在学生文件中的位移量是idx[mid].offset
+                    find=1;
+                    fseek(fp, idx[mid].offset, SEEK_SET);    // 在学生文件中定位待查找的学生记录
+                    fread(&t, sizeof(CourseTab), 1, fp);   // 从学生文件中读取一个学生记录
+                }
+            } else {    // 不存在学生索引文件时，则在学生文件中进行顺序扫描查找
+                rewind(fp);    // 复位到学生文件头
+                fread(&t, sizeof(CourseTab), 1, fp);   // 从学生文件中读取一个学生记录
+                while (!feof(fp)) {    // 在学生文件中顺序查找学号num的学生记录，找到后再显示
+                    if (strcmp(t.coursenum, num)==0) {   // 如果在学生文件中找到了给定学号num的学生记录
+                        find=1;    break;     // 找到了，则结束顺序查找
+                    }
+                    fread(&t, sizeof(CourseTab), 1, fp);   // 从学生文件中读取一个学生记录
+                }
+            }
+            system("cls");
+            if (find) {
+                printf("\n\n===================================================");
+                printf("\n CourseNum :     %-s", t.coursenum);
+                printf("\n CourseName :    %-s", t.coursename);
+                printf("\n Credit :     %-d", t.credit);
+                printf("\n CourseHour :   %-d", t.coursehour);
+                printf("\n Teachername :  %s", t.teachername);
+                printf("\n==================================================");
+            } else { system("cls");    printf("\n\n\t\tNot find record"); }
+            do {
+                printf("\n\nCountinue?(y/n): ");
+                gets(ch);
+            } while (!(ch[0]=='y' || ch[0]=='n' || ch[0]=='Y' || ch[0]=='N'));
+            if (ch[0]=='y' || ch[0]=='Y') goto F2;   
+            else fclose(fp);
+            break;
+        }
+        case '3': {
+            int find, len=0, start, end, mid;    
+            char ch[30], num[10];    
+            FILE *fp;
+            ScoreTab t;      // 定义学生表的结构体变量t
+	    if ((fp=fopen("8888SCOR.dat", "rb"))==0) { 
+                printf("\n\nCannot open SCOR data file!\n");
+                system("pause");
+                break;
+            }
+         F3: printf("\n\nPlease input Student's num:  ");
+            gets(num);    
+            find=0;
+            rewind(fp);    // 复位到学生文件头
+            fread(&t, sizeof(ScoreTab), 1, fp);   // 从学生文件中读取一个学生记录
+            while (!feof(fp)) {    // 在学生文件中顺序查找学号num的学生记录，找到后再显示
+                if (strcmp(t.num, num)==0) {   // 如果在学生文件中找到了给定学号num的学生记录
+                    find=1;    
+                    break;     // 找到了，则结束顺序查找
+                }
+                fread(&t, sizeof(ScoreTab), 1, fp);   // 从学生文件中读取一个学生记录
+            }
+            system("cls");
+            if (find) {
+                printf("\n\n===================================================");
+                printf("\n num :     %-s", t.num);
+                printf("\n CourseNum :    %-s", t.coursenum);
+                printf("\n NormalScore :     %-d", t.normalscore);
+                printf("\n TestScore :   %-d", t.testscore);
+                printf("\n Score :  %d", t.score);
+                printf("\n==================================================");
+            } else { system("cls");    printf("\n\n\t\tNot find record"); }
+            do {
+                printf("\n\nCountinue?(y/n): ");
+                gets(ch);
+            } while (!(ch[0]=='y' || ch[0]=='n' || ch[0]=='Y' || ch[0]=='N'));
+            if (ch[0]=='y' || ch[0]=='Y') goto F3;   
+            else fclose(fp);
+            break;
+        }
+    }
+}
+
 void ModiFile() {      // 修改文件中的记录
     char xz[8];
     system("cls");
@@ -360,7 +547,7 @@ void TabShow() {
             system("pause");
             break;
         }
-	    if ((fpIdx=fopen("8888TIDX.dat", "rb"))==0) flag=0;   
+	    if ((fpIdx=fopen("8888CIDX.dat", "rb"))==0) flag=0;   
         else flag=1;
         if (flag) { 
             do {
@@ -463,7 +650,7 @@ void TabShow() {
                 system("pause");
                 break;
             }
-            if ((fp5=fopen("8888TIDX.dat", "rb"))==0) 
+            if ((fp5=fopen("8888CIDX.dat", "rb"))==0) 
             {
                 printf("\n\nCannot open Teacher IDX file!\n");
                 fclose(fp1);    fclose(fp2);  fclose(fp3); fclose(fp4);
@@ -555,7 +742,7 @@ void InitFile() {          // 文件初始化
         printf("\n\nCannot open Student Idx file!\n");
         system("pause");exit(0);
     }
-    if ((fp5=fopen("8888TIDX.dat", "wb"))==0){   // 初始化第5个文件
+    if ((fp5=fopen("8888CIDX.dat", "wb"))==0){   // 初始化第5个文件
         printf("\n\nCannot open Teacher Idx file!\n");
         system("pause");exit(0);
     }
@@ -809,7 +996,8 @@ int main()
         goto Start;
         break;
         case 3:
-        printf("3");
+        FindRec();
+        goto Start;
         break;
         case 4:
         TabShow();
