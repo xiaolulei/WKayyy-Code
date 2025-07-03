@@ -5,7 +5,206 @@
 
 using namespace std;
 
-void AutoComp()
+/*-----------------------------------------------*/
+
+void Sort() {
+    char xz[8];
+    system("cls");
+    printf("\n\n      0--return");
+    printf("\n\n      1--student table on student' num");
+    printf("\n\n      2--course table on course' num");
+    printf("\n\n      3--score table on first student' num and next course' num");
+    printf("\n\n      4--score table on first course' num and next student' num");
+    printf("\n\n      please choise: (0, 1, 2, 3, 4): ");
+    do {
+        gets(xz);
+    } while (xz[0]!='0' && xz[0]!='1' && xz[0]!='2' && xz[0]!='3' && xz[0]!='4');
+    system("cls");
+    switch(xz[0]){
+        case '0': return;
+        case '1': {   // 学生表按学号升序排序
+            int count=0, i, j, post;    
+            FILE *fp;
+            // 定义学生表的结构体数组stud[100], 结构体指针变量p和结构体指针数组pst[100]
+            StudentTab *p, stud[100], *pst[100];
+            if ((fp=fopen("8888STUD.dat", "rb"))==0) 
+            { 
+                printf("\n\nCannot open STUDENT data file!\n");
+                system("pause");
+                break;
+            }
+            // 将学生文件中的记录逐一读入数组stud[100]中，并统计学生记录数count
+            fread(&stud[count], sizeof(StudentTab), 1, fp);   // 从学生文件中读取一个学生记录
+            pst[count]=&stud[count];    // 使指针数组元素pst[count]指向学生结构体数组元素stud[count]
+            while (!feof(fp)) // 依次处理学生文件中的每一个学生记录
+            {    
+                count++;
+                fread(&stud[count], sizeof(StudentTab), 1, fp);   // 从学生文件中读取下一个学生记录
+                // 将学生文件中的记录逐一读入数组stud[100]中，并统计学生记录数count
+                pst[count]=stud+count;    // 使指针数组元素pst[count]指向学生结构体数组元素stud[count]
+            }
+            for (i=0; i<count-1; i++) {      // 用选择法通过指针数组对结构体数组按学号进行升序排序
+                post=i;
+                for (j=i+1; j<count; j++)
+                    if (strcmp(pst[j]->num, pst[post]->num)<0) post=j;
+                if (post!=i) {        // 交换指针数组元素的指向
+                    p=pst[i]; pst[i]=pst[post]; pst[post]=p;
+                }
+            }
+            fclose(fp);
+	        if ((fp=fopen("8888STUD.dat", "w+b"))==0) {
+                printf("\n\nCannot open STUDENT data file!\n");
+                system("pause");
+                break;
+            }
+            for (i=0; i<count; i++)       // 将排序后的学生记录逐条写回文件中
+                fwrite(pst[i], sizeof(StudentTab), 1, fp);
+            fclose(fp);
+            system("cls");
+            printf("\n\n\t\tThe sort of student table is over. ");
+            system("pause");
+            break;
+        }
+        case '2': {   // 课程表按课程代码升序排序
+            int count=0, i, j, post;    
+            FILE *fp;
+            // 定义学生表的结构体数组stud[100], 结构体指针变量p和结构体指针数组pst[100]
+            CourseTab *p, cour[100], *pst[100];
+            if ((fp=fopen("8888COUR.dat", "rb"))==0) 
+            { 
+                printf("\n\nCannot open COURSE data file!\n");
+                system("pause");
+                break;
+            }
+            // 将学生文件中的记录逐一读入数组stud[100]中，并统计学生记录数count
+            fread(&stud[count], sizeof(CourseTab), 1, fp);   // 从学生文件中读取一个学生记录
+            pst[count]=&cour[count];    // 使指针数组元素pst[count]指向学生结构体数组元素stud[count]
+            while (!feof(fp)) // 依次处理学生文件中的每一个学生记录
+            {    
+                count++;
+                fread(&cour[count], sizeof(CourseTab), 1, fp);   // 从学生文件中读取下一个学生记录
+                // 将学生文件中的记录逐一读入数组stud[100]中，并统计学生记录数count
+                pst[count]=cour+count;    // 使指针数组元素pst[count]指向学生结构体数组元素stud[count]
+            }
+            for (i=0; i<count-1; i++) {      // 用选择法通过指针数组对结构体数组按学号进行升序排序
+                post=i;
+                for (j=i+1; j<count; j++)
+                    if (strcmp(pst[j]->coursenum, pst[post]->coursenum)<0) post=j;
+                if (post!=i) {        // 交换指针数组元素的指向
+                    p=pst[i]; pst[i]=pst[post]; pst[post]=p;
+                }
+            }
+            fclose(fp);
+	        if ((fp=fopen("8888COUR.dat", "w+b"))==0) {
+                printf("\n\nCannot open STUDENT data file!\n");
+                system("pause");
+                break;
+            }
+            for (i=0; i<count; i++)       // 将排序后的学生记录逐条写回文件中
+                fwrite(pst[i], sizeof(CourseTab), 1, fp);
+            fclose(fp);
+            system("cls");
+            printf("\n\n\t\tThe sort of course table is over. ");
+            system("pause");
+            break;
+        }
+        case '3': {   // 成绩表按先学号、后课程代码升序排序
+            int count=0, i, j, post;    
+            FILE *fp;
+            ScoreTab *p, scor[100], *pst[100];
+            if ((fp=fopen("8888SCOR.dat", "rb"))==0) 
+            { 
+                printf("\n\nCannot open SCORE data file!\n");
+                system("pause");
+                break;
+            }
+            fread(&scor[count], sizeof(ScoreTab), 1, fp);  
+            pst[count]=&scor[count];    
+            while (!feof(fp)) 
+            {    
+                count++;
+                fread(&scor[count], sizeof(ScoreTab), 1, fp); 
+                pst[count]=scor+count;   
+            }
+            for (i=0; i<count-1; i++) {    
+                post=i;
+                for (j=i+1; j<count; j++)
+                    if (pst[j]->score < pst[post]->score) post=j;
+                    else if(pst[j]->score == pst[post]->score)
+                    {
+                        if(strcmp(pst[j]->coursenum, pst[post]->coursenum) < 1)
+                        post = j;
+                        else continue;
+                    }
+                if (post!=i) {        // 交换指针数组元素的指向
+                    p=pst[i]; pst[i]=pst[post]; pst[post]=p;
+                }
+            }
+            fclose(fp);
+	        if ((fp=fopen("8888SCOR.dat", "w+b"))==0) {
+                printf("\n\nCannot open SCORE data file!\n");
+                system("pause");
+                break;
+            }
+            for (i=0; i<count; i++)       // 将排序后的学生记录逐条写回文件中
+                fwrite(pst[i], sizeof(ScoreTab), 1, fp);
+            fclose(fp);
+            system("cls");
+            printf("\n\n\t\tThe sort of score table is over. ");
+            system("pause");
+            break;
+        }
+        case '4': {   // 成绩表按先课程代码、后学号升序排序
+            int count=0, i, j, post;    
+            FILE *fp;
+            ScoreTab *p, scor[100], *pst[100];
+            if ((fp=fopen("8888SCOR.dat", "rb"))==0) 
+            { 
+                printf("\n\nCannot open SCORE data file!\n");
+                system("pause");
+                break;
+            }
+            fread(&scor[count], sizeof(ScoreTab), 1, fp);  
+            pst[count]=&scor[count];    
+            while (!feof(fp)) 
+            {    
+                count++;
+                fread(&scor[count], sizeof(ScoreTab), 1, fp); 
+                pst[count]=scor+count;   
+            }
+            for (i=0; i<count-1; i++) {    
+                post=i;
+                for (j=i+1; j<count; j++)
+                    if ((pst[j]->coursenum, pst[post]->coursenum) < 1) post=j; 
+                    else if((pst[j]->coursenum, pst[post]->coursenum) == 1)
+                    {
+                        if(pst[j]->score < pst[post]->score)
+                        post = j;
+                        else continue;
+                    }
+                if (post!=i) {        // 交换指针数组元素的指向
+                    p=pst[i]; pst[i]=pst[post]; pst[post]=p;
+                }
+            }
+            fclose(fp);
+	        if ((fp=fopen("8888SCOR.dat", "w+b"))==0) {
+                printf("\n\nCannot open SCORE data file!\n");
+                system("pause");
+                break;
+            }
+            for (i=0; i<count; i++)       // 将排序后的学生记录逐条写回文件中
+                fwrite(pst[i], sizeof(ScoreTab), 1, fp);
+            fclose(fp);
+            system("cls");
+            printf("\n\n\t\tThe sort of score table is over. ");
+            system("pause");
+            break;
+        }
+    }
+}
+
+
+void AutoCompute()
 { 
     fflush(stdin);
     // 自动计算每一个学生所选修课程的门数和加权平均成绩
@@ -1361,11 +1560,12 @@ Start:
         printf("5");
         break;
     case 6:
-        AutoComp();
-        goto Start; // 自动计算每一个学生所选修课程的门数和加权平均成绩
+        AutoCompute();  // 自动计算每一个学生所选修课程的门数和加权平均成绩
+        goto Start; 
         break;
     case 7:
-        printf("7");
+        Sort();
+        goto Start;
         break;
     case 8:
         printf("8");
