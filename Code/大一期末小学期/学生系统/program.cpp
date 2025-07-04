@@ -5,7 +5,235 @@
 
 using namespace std;
 
-/*-----------------------------------------------*/
+void BuildIdx() {
+    char xz[8];
+    system("cls");
+    printf("\n\n      0--return");
+    printf("\n\n      1--Build index on student table by student' num");
+    printf("\n\n      2--Build index on course table by course' num");
+    printf("\n\n      3--Build index on score table by student' num and course' num");
+    printf("\n\n      4--Build index on score table by course' num and student' num");
+    printf("\n\n      please choise: (0, 1, 2, 3, 4): ");
+    do {
+        gets(xz);
+    } while (xz[0]!='0' && xz[0]!='1' && xz[0]!='2' && xz[0]!='3' && xz[0]!='4');
+    system("cls");
+    switch (xz[0]) 
+    {
+        case '0': return;
+        case '1': {   // 学生表按学号建立索引
+            int count=0, i, j, post;    
+            FILE *fp, *fpIdx;
+            StudentTab t;  
+            StudentIdxTab p, idx[100];  
+            if ((fp=fopen("8888STUD.dat", "rb"))==0) 
+            {
+                printf("\n\n\t Cannot open STUDENT data file!\n");
+                system("pause");
+                break;
+            }
+	        if ((fpIdx=fopen("8888SIDX.dat", "w+b"))==0) 
+            {
+                printf("\n\n\t Cannot open STUDENT index file!\n");
+                fclose(fp);
+                system("pause");
+                break;
+            }
+            // 将学生文件中的学生记录的学号(索引项)、位移量逐一读入学生索引表结构体数组idx[100]中
+            idx[count].offset=ftell(fp);    // 获取学生文件中当前学生记录的位移量
+            fread(&t, sizeof(StudentTab), 1, fp);   // 从学生文件中读取一个学生记录
+            strcpy(idx[count].num, t.num);       // 获取学生文件中刚读取学生记录的学号(即索引码)
+            while (!feof(fp)) 
+            {    
+                // 依次处理学生文件中的每一个学生记录
+                count++;
+                idx[count].offset=ftell(fp);    // 获取学生文件中当前学生记录的位移量
+                fread(&t, sizeof(StudentTab), 1, fp);   // 从学生文件中读取下一个学生记录
+                strcpy(idx[count].num, t.num);       // 获取学生文件中刚读取学生记录的学号(即索引码)
+            }
+            for (i=0; i<count-1; i++) { //用选择法对结构体数组idx按学号进行升序排序, 并将结果写入学生索引文件
+                post=i;
+                for (j=i+1; j<count; j++)
+                    if (strcmp(idx[j].num, idx[post].num)<0) post=j;
+                // 目前最小学号的索引项是结构体数组idx中的第post个元素，将它写入学生索引文件中
+                fwrite(&idx[post], sizeof(StudentIdxTab), 1, fpIdx);
+                if (post!=i) 
+                {        // 将结构体数组idx中的第i个元素赋给第post个元素
+                    strcpy(idx[post].num, idx[i].num);
+                    idx[post].offset=idx[i].offset;
+                }
+            }
+            fwrite(&idx[count-1], sizeof(StudentIdxTab), 1, fpIdx);    // 将最后一个索引项写入学生索引文件
+            fclose(fp);    
+            fclose(fpIdx);
+            system("cls");
+            printf("\n\n\t\tBuilding indext of student table is over. ");
+            system("pause");
+            break;
+        }
+        case '2': {   // 课程表按课程代码建立索引
+            int count=0, i, j, post;    
+            FILE *fp, *fpIdx;
+            CourseTab t;  
+            CourseIdxTab p, idx[100];  
+            if ((fp=fopen("8888COUR.dat", "rb"))==0) 
+            {
+                printf("\n\n\t Cannot open COURSE data file!\n");
+                system("pause");
+                break;
+            }
+	        if ((fpIdx=fopen("8888CIDX.dat", "w+b"))==0) 
+            {
+                printf("\n\n\t Cannot open COURSE index file!\n");
+                fclose(fp);
+                system("pause");
+                break;
+            }
+            idx[count].offset=ftell(fp); 
+            fread(&t, sizeof(CourseTab), 1, fp); 
+            strcpy(idx[count].coursenum, t.coursenum);       
+            while (!feof(fp)) 
+            {    
+                count++;
+                idx[count].offset=ftell(fp);    
+                fread(&t, sizeof(CourseTab), 1, fp);   
+                strcpy(idx[count].coursenum, t.coursenum);      
+            }
+            for (i=0; i<count-1; i++) { 
+                post=i;
+                for (j=i+1; j<count; j++)
+                    if (strcmp(idx[j].coursenum, idx[post].coursenum)<0) post=j;
+                fwrite(&idx[post], sizeof(CourseIdxTab), 1, fpIdx);
+                if (post!=i) 
+                {       
+                    strcpy(idx[post].coursenum, idx[i].coursenum);
+                    idx[post].offset=idx[i].offset;
+                }
+            }
+            fwrite(&idx[count-1], sizeof(CourseIdxTab), 1, fpIdx);    // 将最后一个索引项写入学生索引文件
+            fclose(fp);    
+            fclose(fpIdx);
+            system("cls");
+            printf("\n\n\t\tBuilding indext of course table is over. ");
+            system("pause");
+            break;
+        }
+        case '3': {   // 成绩表按先学号、后课程代码建立索引
+            int count=0, i, j, post;    
+            FILE *fp, *fpIdx;
+            ScoreTab t;  
+            ScoreIdxTab p, idx[100];  
+            if ((fp=fopen("8888SCOR.dat", "rb"))==0) 
+            {
+                printf("\n\n\t Cannot open SCORE data file!\n");
+                system("pause");
+                break;
+            }
+	        if ((fpIdx=fopen("8888SCOREIDX.dat", "w+b"))==0) 
+            {
+                printf("\n\n\t Cannot open SCORE index file!\n");
+                fclose(fp);
+                system("pause");
+                break;
+            }
+            idx[count].offset=ftell(fp); 
+            fread(&t, sizeof(ScoreTab), 1, fp); 
+            strcpy(idx[count].num1, t.num);
+            strcpy(idx[count].num2,t.coursenum);    
+            while (!feof(fp)) 
+            {    
+                count++;
+                idx[count].offset=ftell(fp);    
+                fread(&t, sizeof(ScoreTab), 1, fp);   
+                strcpy(idx[count].num1,t.num);
+                strcpy(idx[count].num2,t.coursenum);    
+            }
+            for (i=0; i<count-1; i++) 
+            { 
+                post=i;
+                for (j=i+1; j<count; j++)
+                {
+                    if (strcmp(idx[j].num1, idx[post].num1)<0) post=j;
+                    else if(strcmp(idx[j].num1, idx[post].num1) == 0)
+                    {
+                        if(strcmp(idx[j].num2,idx[post].num2)<0) post = j;
+                    }
+                }
+                fwrite(&idx[post], sizeof(ScoreIdxTab), 1, fpIdx);
+                if (post!=i) 
+                {       
+                    strcpy(idx[post].num1, idx[i].num1);
+                    strcpy(idx[post].num2, idx[i].num2);
+                    idx[post].offset=idx[i].offset;
+                }
+            }
+            fwrite(&idx[count-1], sizeof(ScoreIdxTab), 1, fpIdx);    // 将最后一个索引项写入学生索引文件
+            fclose(fp);    
+            fclose(fpIdx);
+            system("cls");
+            printf("\n\n\t\tBuilding indext of course table is over. ");
+            system("pause");
+            break;
+        }
+        case '4': {   // 成绩表按先课程代码、后学号建立索引
+            int count=0, i, j, post;    
+            FILE *fp, *fpIdx;
+            ScoreTab t;  
+            ScoreIdxTab p, idx[100];  
+            if ((fp=fopen("8888SCOR.dat", "rb"))==0) 
+            {
+                printf("\n\n\t Cannot open SCORE data file!\n");
+                system("pause");
+                break;
+            }
+	        if ((fpIdx=fopen("8888SCOREIDX.dat", "w+b"))==0) 
+            {
+                printf("\n\n\t Cannot open SCORE index file!\n");
+                fclose(fp);
+                system("pause");
+                break;
+            }
+            idx[count].offset=ftell(fp); 
+            fread(&t, sizeof(ScoreTab), 1, fp); 
+            strcpy(idx[count].num1, t.coursenum);
+            strcpy(idx[count].num2,t.num);    
+            while (!feof(fp)) 
+            {    
+                count++;
+                idx[count].offset=ftell(fp);    
+                fread(&t, sizeof(ScoreTab), 1, fp);   
+                strcpy(idx[count].num1, t.coursenum);
+                strcpy(idx[count].num2,t.num);    
+            }
+            for (i=0; i<count-1; i++) 
+            { 
+                post=i;
+                for (j=i+1; j<count; j++)
+                {
+                    if (strcmp(idx[j].num1, idx[post].num1)<0) post=j;
+                    else if(strcmp(idx[j].num1, idx[post].num1) == 0)
+                    {
+                        if(strcmp(idx[j].num2,idx[post].num2)<0) post = j;
+                    }
+                }
+                fwrite(&idx[post], sizeof(ScoreIdxTab), 1, fpIdx);
+                if (post!=i) 
+                {       
+                    strcpy(idx[post].num1, idx[i].num1);
+                    strcpy(idx[post].num2, idx[i].num2);
+                    idx[post].offset=idx[i].offset;
+                }
+            }
+            fwrite(&idx[count-1], sizeof(ScoreIdxTab), 1, fpIdx);    // 将最后一个索引项写入学生索引文件
+            fclose(fp);    
+            fclose(fpIdx);
+            system("cls");
+            printf("\n\n\t\tBuilding indext of score table is over. ");
+            system("pause");
+            break;
+        }
+    }
+}
 
 void Sort() {
     char xz[8];
@@ -77,7 +305,7 @@ void Sort() {
                 break;
             }
             // 将学生文件中的记录逐一读入数组stud[100]中，并统计学生记录数count
-            fread(&stud[count], sizeof(CourseTab), 1, fp);   // 从学生文件中读取一个学生记录
+            fread(&cour[count], sizeof(CourseTab), 1, fp);   // 从学生文件中读取一个学生记录
             pst[count]=&cour[count];    // 使指针数组元素pst[count]指向学生结构体数组元素stud[count]
             while (!feof(fp)) // 依次处理学生文件中的每一个学生记录
             {    
@@ -175,8 +403,8 @@ void Sort() {
             for (i=0; i<count-1; i++) {    
                 post=i;
                 for (j=i+1; j<count; j++)
-                    if ((pst[j]->coursenum, pst[post]->coursenum) < 1) post=j; 
-                    else if((pst[j]->coursenum, pst[post]->coursenum) == 1)
+                    if (strcmp(pst[j]->coursenum,pst[post]->coursenum) < 1) post=j; 
+                    else if(strcmp(pst[j]->coursenum, pst[post]->coursenum) == 0)
                     {
                         if(pst[j]->score < pst[post]->score)
                         post = j;
@@ -1525,7 +1753,7 @@ int main()
 {
 Start:
     int choice;
-    system("cls");
+    
     printf("\n\n\t\tStudent Management System\n\n");
     printf("================================================================\n");
     printf("\n\t\t   ---0.Exit System\n");
@@ -1568,7 +1796,8 @@ Start:
         goto Start;
         break;
     case 8:
-        printf("8");
+        BuildIdx();
+        goto Start;
         break;
     case 9:
         InitFile();
