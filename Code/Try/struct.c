@@ -1,18 +1,51 @@
 #include<stdio.h>
-struct student
+
+
+int min(int x,int y)
 {
-    char num[10];
-    char name[15];
-    int age;
-    char sex;
-    float score;
-};
-struct student s1,s2;
+    if(x<y) return x;
+    else return y;
+}
+
+
 int main()
 {
-    struct student t={"1234567890","abcdefghijklmno",1,'m',100.0};
-    printf("%s%s%d%c%f\n",t.num,t.name,t.age,t.sex,t.score);
-    printf("%d",sizeof(struct student));
-    printf("%d",sizeof(s1));
+    int n,m;
+    scanf("%d%d",&n,&m);
+    int a[m];
+    int t=1000;
+   
+    for(int i = 0;i < m;i ++)
+    {
+        scanf("%d", &a[i]);
+    }
+    if((n-m)>=2)
+    {
+        t=0;
+    }
+    else if((n-m)==1)
+    {
+        for(int i=0;i<m;i++)
+        {
+            t = min(t,a[i]);
+        }
+    }
+    else{
+        for(int i=0;i<m-1;i++)
+        {
+            for(int j=0;j<m-1-i;j++)
+            {
+                if(a[j]>a[j+1])
+                {
+                    int temp=a[j];
+                    a[j]=a[j+1];
+                    a[j+1]=temp;
+                }
+            }
+        }
+        t=a[1];
+    }
+    int num=20+t;
+    printf("%d",num);
     return 0;
 }

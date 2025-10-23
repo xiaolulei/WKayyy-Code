@@ -1,8 +1,10 @@
-#include <iostream>
+#include <iostream> 
 
 using namespace std;
 
 const int N = 1e5+10;
+
+int n, m;
 int g[N];
 
 int find(int x)
@@ -13,18 +15,17 @@ int find(int x)
 
 int main()
 {
-    int n, m;
     cin >> n >> m;
-    for(int i = 1 ; i <= n ; i ++) g[i] = i;
+    for(int i = 1 ; i <= n ; i ++)  g[i] = i; 
 
+    char choice[2];
+    int a,b;
     for(int i = 1 ; i <= m ; i ++)
     {
-        char choice[2];
-        int a , b;
         cin >> choice >> a >> b;
         if(choice[0] == 'M')
         {
-            g[find(b)] = find(a);
+            g[find(b)] = find(a);  
         }
         else
         {
@@ -32,6 +33,5 @@ int main()
             else cout << "No" << endl;
         }
     }
-
     return 0;
 }
