@@ -1,6 +1,5 @@
-#include <iostream>
-
-using namespace std;
+#include <stdio.h>
+#include <string.h>
 
 const int m = 20; 
 int Q[m];       
@@ -8,11 +7,11 @@ int front = 0;
 int rear = 0;      
 int tag = 0;     
 
-void Push(int a) 
+void enqueue(int a) 
 {
     if (front == rear && tag == 1) 
     {
-        cout << "The queue is full!" << endl;
+        printf("The queue is full!\n");
         return;
     }
     Q[rear] = a;
@@ -23,11 +22,11 @@ void Push(int a)
     }
 }
 
-int Pop() 
+int dequeue() 
 {
     if (front == rear && tag == 0) 
     {
-        cout << "The queue is empty!" << endl;
+        printf("The queue is empty!\n");
         return -1;
     }
     int data = Q[front];
@@ -41,24 +40,25 @@ int Pop()
 
 int main() 
 {
-    while (1) 
+    while(1) 
     {
-        string choice;
-        cin >> choice;
-        if (choice == "Push") 
+        char choice[20];
+        scanf("%s", choice);
+        if (strcmp(choice, "enqueue") == 0) 
         {
             int a;
-            cin >> a;
-            Push(a);
+            scanf("%d", &a);
+            enqueue(a);
         } 
-        else if (choice == "Pop") 
+        else if (strcmp(choice, "dequeue") == 0) 
         {
-            int val = Pop();
-            if (val != -1) {
-                cout << "Pop: " << val << endl;
+            int val = dequeue();
+            if (val != -1) 
+            {
+                printf("dequeue: %d\n", val);
             }
         } 
-        else if (choice == "exit") 
+        else if (strcmp(choice, "exit") == 0) 
         {
             break;
         }

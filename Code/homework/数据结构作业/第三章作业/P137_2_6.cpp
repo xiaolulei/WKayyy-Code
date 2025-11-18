@@ -1,15 +1,19 @@
-#include <iostream>
+#include <stdio.h>
+#include <string.h>
 
-using namespace std;
+#define N 1000
 
-const int N = 1000;
-typedef pair<int, int> PII;
+typedef struct 
+{
+    int first;
+    int second;
+} PII;
+
 PII num[N];
-
 int tail, sum, idx;
 
 void init_num() 
- {
+{
     for (int i = 0; i < 19; i++) {
         num[i].first = -1;
         num[i].second = i + 1;
@@ -24,11 +28,10 @@ void init_num()
 void init() 
 {
     if (tail == -1) return;
-    
     int head = num[tail].second;
     int current = head;
-    
-    do {
+    do 
+    {
         int next = num[current].second;
         num[current].first = -1;
         current = next;
@@ -42,16 +45,16 @@ void init()
 void IsEmpty() 
 {
     if (tail == -1)
-        cout << "IsEmpty" << endl;
+        printf("IsEmpty\n");
     else
-        cout << "NotEmpty" << endl;
+        printf("NotEmpty\n");
 }
 
 int Push(int a) 
 {
     if (sum == 20) 
     {
-        cout << "The queue is full!" << endl;
+        printf("The queue is full!\n");
         return 0;
     }
     
@@ -64,7 +67,8 @@ int Push(int a)
     {
         num[new_node].second = new_node;
         tail = new_node;
-    } else {
+    } else 
+    {
         int head = num[tail].second;
         num[tail].second = new_node;
         num[new_node].second = head;
@@ -79,7 +83,7 @@ int Pop()
 {
     if (tail == -1) 
     {
-        cout << "The queue is empty!" << endl;
+        printf("The queue is empty!\n");
         return -1;
     }
     
@@ -105,27 +109,29 @@ int Pop()
 int main() 
 {
     init_num();
-    while (1) {
-        string choice;
-        cin >> choice;
-        if (choice == "init") 
+    while (1) 
+    {
+        char choice[20]; 
+        scanf("%s", choice);
+
+        if (strcmp(choice, "init") == 0) 
         {
             init();
-        } else if (choice == "isempty") 
+        } else if (strcmp(choice, "isempty") == 0) 
         {
             IsEmpty();
-        } else if (choice == "Push") 
+        } else if (strcmp(choice, "Push") == 0) 
         {
             int a;
-            cin >> a;
+            scanf("%d", &a);
             Push(a);
-        } else if (choice == "Pop") 
+        } else if (strcmp(choice, "Pop") == 0) 
         {
             int val = Pop();
             if (val != -1) {
-                cout << "Pop: " << val << endl;
+                printf("Pop: %d\n", val);
             }
-        } else if (choice == "exit") 
+        } else if (strcmp(choice, "exit") == 0) 
         {
             break;
         }

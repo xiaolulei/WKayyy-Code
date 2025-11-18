@@ -1,9 +1,9 @@
-#include <iostream>
-#include <string>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
-using namespace std;
-
-typedef struct {
+typedef struct 
+{
     int top[2], bot[2]; 
     int *V;             
     int m;            
@@ -89,40 +89,41 @@ int Pop1(DblStack *s, int *e)
 
 int main() {
     DblStack stack;
-    cout << "Please enter the stackSize" << endl;
+    printf("Please enter the stackSize\n");
     int stackSize;
-    scanf("%d",&stackSize);
+    scanf("%d", &stackSize);
     getchar();
     InitDblStack(&stack, stackSize);
-    while(1)
+
+    while (1)
     {
-        string choice;
-        cin >> choice;
-        if(choice == "Push0")
+        char choice[10];
+        scanf("%s", choice); 
+        if (strcmp(choice, "Push0") == 0)
         {
             int tmp;
-            cin >> tmp;
+            scanf("%d", &tmp);
             Push0(&stack, tmp);
         }
-        else if(choice == "Push1")
+        else if (strcmp(choice, "Push1") == 0)
         {
             int tmp;
-            cin >> tmp;
+            scanf("%d", &tmp);
             Push1(&stack, tmp);
         }
-        else if(choice == "Pop0")
+        else if (strcmp(choice, "Pop0") == 0)
         {
             int val0;
-            Pop0(&stack, &val0);
-            printf("Stack0.top is %d\n", val0);
+            if (Pop0(&stack, &val0))
+                printf("Stack0.top is %d\n", val0);
         }
-        else if(choice == "Pop1")
+        else if (strcmp(choice, "Pop1") == 0)
         {
             int val1;
-            Pop1(&stack, &val1);
-            printf("Stack1.top is %d\n", val1);
+            if (Pop1(&stack, &val1))
+                printf("Stack1.top is %d\n", val1);
         }
-        else if(choice == "Exit")
+        else if (strcmp(choice, "Exit") == 0)
         {
             free(stack.V);
             break;
@@ -132,5 +133,8 @@ int main() {
             printf("Invalid command! Use Push0/Push1/Pop0/Pop1/Exit\n");
         }
     }
-    for(int i = 0 ; i < stackSize; i ++) cout << stack.V[i] << " ";
+
+    for (int i = 0; i < stackSize; i++)
+        printf("%d ", stack.V[i]);
+    return 0;
 }

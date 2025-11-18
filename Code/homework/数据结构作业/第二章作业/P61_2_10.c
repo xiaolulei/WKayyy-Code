@@ -1,10 +1,12 @@
-#include <iostream>
+#include <stdio.h>
 
-using namespace std;
+#define N 100010
 
-const int N = 1e5 + 10;
-
-typedef pair<int,int> PII;
+typedef struct 
+{
+    int first;
+    int second;
+} PII;
 
 PII node[N];
 int head = 1; //头指针
@@ -27,12 +29,15 @@ int main()
 
     int current = head;
     int item , pre = 0;
-    cin >> item;
+    scanf("%d", &item);
     while(current != -1)
     {
         if(node[current].first == item)
         {
-            if(head == current) head = node[current].second;
+            if(head == current) 
+            {
+                head = node[current].second;
+            }
             else
             {
                 node[pre].second = node[current].second;
@@ -45,8 +50,9 @@ int main()
     current = head;
     while(current != -1)
     {
-        cout << node[current].first << ' ';
+        printf("%d ", node[current].first);
         current = node[current].second;
     }
+    printf("\n");
     return 0;
 }

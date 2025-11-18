@@ -1,38 +1,56 @@
-#include <iostream>
-#include <stack>
-#include <string>
+#include <stdio.h>
+#include <string.h>
+#include <stdbool.h>
 
-using namespace std;
+#define N 100010 //为字符串和栈定义一个最大尺寸
 
-stack<char> a;
+char a_stack[N];
+char str[N];
+int a_top = -1;
+
+void push(char c) 
+{
+    if (a_top < N - 1) 
+    {
+        a_top++;
+        a_stack[a_top] = c;
+    }
+}
+
+void pop() 
+{
+    if (a_top > -1) a_top--;
+}
+
+char top() 
+{
+    if (a_top > -1) return a_stack[a_top];
+    return '\0'; 
+}
 
 int main()
 {
-    string str;
-    cin >> str;
-    int size = str.size();
-    bool isPalindrome = true;
-    
-    for(int i = 0 ; i < size/2; i ++) 
-    {
-        a.push(str[i]);
-    }
+    scanf("%s", str);
+    int size = strlen(str);
+    bool huiwen = true;
+    for(int i = 0 ; i < size/2; i ++) push(str[i]);
+
     int start = (size % 2 == 1) ? size/2 + 1 : size/2;
-    
+
     for(int i = start; i < size ; i ++)
     {
-        if(a.top() != str[i])
+        if(top() != str[i])
         {
-            isPalindrome = false;
+            huiwen = false;
             break;
         }
-        a.pop();
+        pop();
     }
-    
-    if(isPalindrome)
-        cout << "Yes" << endl;
+
+    if(huiwen)
+        printf("Yes\n");
     else
-        cout << "No" << endl;
+        printf("No\n");
+    
     return 0;
 }
-    
