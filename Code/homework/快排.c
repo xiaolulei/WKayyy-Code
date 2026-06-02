@@ -1,20 +1,12 @@
 #include <stdio.h>
 
-// 交换两个元素的值
 void swap(int* a, int* b) {
     int t = *a;
     *a = *b;
     *b = t;
 }
 
-/**
- * 分区函数 (Partition)
- * 选择最后一个元素作为基准 (Pivot)，并将小于基准的元素放到其左边。
- * * @param arr 待排序的数组
- * @param low 分区的起始索引
- * @param high 分区的结束索引
- * @return 基准元素最终所在的位置 (索引)
- */
+
 int partition(int arr[], int low, int high) {
     // 1. 选择基准 (Pivot)：这里选择最后一个元素
     int pivot = arr[high]; 
@@ -40,14 +32,11 @@ int partition(int arr[], int low, int high) {
     return (i + 1);
 }
 
-/**
- * 快速排序主函数
- * * @param arr 待排序的数组
- * @param low 数组的起始索引
- * @param high 数组的结束索引
- */
-void quickSort(int arr[], int low, int high) {
-    if (low < high) {
+
+void quickSort(int arr[], int low, int high) 
+{
+    if (low < high) 
+    {
         // pi 是分区后基准元素 (pivot) 的索引
         int pi = partition(arr, low, high);
 

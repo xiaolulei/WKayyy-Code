@@ -9,11 +9,13 @@ void optimizedBubbleSort(int arr[], int n) {
     int i, j;
     bool swapped; // 标志位：记录是否发生了交换
 
-    for (i = 0; i < n - 1; i++) {
+    for (i = 0; i < n - 1; i++) 
+    {
         swapped = false; // 假设本轮没有交换
-
-        for (j = 0; j < n - 1 - i; j++) {
-            if (arr[j] > arr[j + 1]) {
+        for(j = 0; j < n - 1 - i; j++) 
+        {
+            if(arr[j] > arr[j + 1]) 
+            {
                 swap(&arr[j], &arr[j + 1]);
                 swapped = true; // 发生了交换
             }

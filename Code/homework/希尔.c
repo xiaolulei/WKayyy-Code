@@ -12,7 +12,8 @@ void shellSort(int arr[], int n) {
         
         // 2. 对每个子序列进行 插入排序
         // i 从 gap 开始，遍历子序列中的元素
-        for (int i = gap; i < n; i++) {
+        for(int i = gap; i < n; i++) 
+        {
             
             // temp 存储当前子序列要插入的值
             int temp = arr[i];
@@ -33,14 +34,12 @@ void shellSort(int arr[], int n) {
     }
 }
 
-// 打印数组的辅助函数
 void printArray(int arr[], int size) {
     for (int i = 0; i < size; i++)
         printf("%d ", arr[i]);
     printf("\n");
 }
 
-// 主函数示例
 int main() {
     int arr[] = {12, 34, 54, 2, 3, 15, 88, 1};
     int n = sizeof(arr) / sizeof(arr[0]);
